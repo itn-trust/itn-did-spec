@@ -64,9 +64,17 @@ Text - TBD
 
 **Note:** Operations section ensures the ITN DID Method Operations complies with [W3C DID Method Operations](https://w3c.github.io/did-core/#method-operations)
 
-## Security and Privacy Considerations
+## Security Considerations
 
-**Note:** Security and Privacy Considerations section ensures the ITN DID Method Security & Privacy considerations complies with [W3C DID Method [Security](https://w3c.github.io/did-core/#security-requirements) and [Privacy](https://w3c.github.io/did-core/#privacy-requirements) Requirements]
+Text - TBD
+
+**Note:** Security Considerations section ensures the ITN DID Method Security considerations complies with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
+
+## Privacy Considerations
+
+Text - TBD
+
+**Note:** Privacy Considerations section ensures the ITN DID Method Privacy considerations complies with [W3C DID Method Privacy Requirements](https://w3c.github.io/did-core/#privacy-requirements)
 
 ## Apendix
 
