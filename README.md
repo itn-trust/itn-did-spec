@@ -55,7 +55,8 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 ## Terminology
 
-1. ITN - Integrated Trust Network `Not sure if required`
+1. ITN - Integrated Trust Network
+2. EDV - Encrypted Data Vault 
 
 ## DID ITN Method Specification
 
@@ -69,14 +70,80 @@ The format of ITN DID conform to the [W3C DID Core specification](https://www.w3
 
 ### Operations
 
+Identity Protocol provides methods to manage DIDs.
+
+#### Usage of Identity Protocols
+
+```typescript
+import { IdentityProtocol, Agent } from "@itn-trust/agent"
+
+const identityProtocol = new IdentityProtocol({
+  "create-did": async (message: CreateDIDMessage, next) => {
+    // handle CreateDIDMessage
+  },
+  "create-did-response": async (message: CreateDIDResponseMessage, next) => {
+    // handle CreateDIDResponseMessage
+  },
+  "update-did": async (message: UpdateDIDMessage, next) => {
+    // handle UpdateDIDMessage
+  },
+  "update-did-response": async (message: UpdateDIDResponseMessage, next) => {
+    // handle UpdateDIDResponseMessage
+  },
+  "revoke-did": async (message: RevokeDIDMessage, next) => {
+    // handle RevokeDIDMessage
+  },
+  "revoke-did-response": async (message: RevokeDIDResponseMessage, next) => {
+    // handle RevokeDIDResponseMessage
+  },
+  "recover-did": async (message: RecoverDIDMessage, next) => {
+    // handle RecoverDIDMessage
+  },
+  "recover-did-response": async (message: RecoverDIDResponseMessage, next) => {
+    // handle RecoverDIDResponseMessage
+  },
+})
+
+const agent = new Agent({
+  // ...
+  protocols: [identityProtocol],
+})
+```
+
 **Refer** [ITN Identity Protocol](https://github.com/itn-trust/itn/tree/master/packages/sdk/agent/src/protocol/itn.mobi/identity/1.0) for technical details. `DELETE LATER BEFORE CREATING PR`
 
+---
 
 #### Create
 
 Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
 Constraints: Compliance with the DID data schema and DID method requirements. Can only be invoked by the DID controller(s).
 
+
+##### `create()` API
+
+```ts
+create({
+  creator: DIDString | DIDDocument,
+  newDID?: {
+    didDoc: DIDDocument,
+    recoveryKey: Ed25519VerificationKey2020,
+  }
+}): Promise<DIDDocument>
+```
+* `creator` - creator of the new DID, can be a DID string or DID document.
+* `newDID.didDoc` - (optional) a pre-created DID Document.
+* `newDID.recoveryKey` - (optional) a pre-created DID Document's recovery key.
+
+Sends `CreateDIDMessage` to `creator` and receives `CreateDIDResponseMessage` message in `create-did-response` handler.
+
+**example:**
+
+```typescript
+await agent.protocol(IdentityProtocol).create({ creator: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
+```
+
+---
 
 #### Resolve
 
@@ -90,10 +157,136 @@ Description: Based on the DID data schema context file and DID method an ITN pro
 Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be called by the DID controller(s).
 
 
+##### `update()` API
+
+```ts
+update({
+  receiver: DIDString | DIDDocument,
+  oldDIDDoc: DIDDocument,
+  newDIDDoc: DIDDocument,
+}):Promise<void>
+```
+* `receiver` - receiver of the update, can be a DID string or a DID document.
+* `oldDIDDoc` - old DID Document to be updated
+* `newDIDDoc` - new DID document containing the updates.
+
+Sends `UpdateDIDMessage` to `receiver` and receives `UpdateDIDResponseMessage` message in `update-did-response` handler.
+
+**example:**
+
+```typescript
+
+const oldDIDDoc = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+  assertionMethod: [
+    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+  ],
+  authentication: [
+    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+      publicKeyMultibase:
+        "z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+      publicKeyMultibase:
+        "z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+    },
+    {
+      id: "did:itn:test#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:itn:test",
+      publicKeyBase58: "FgF1dWCiADqWr97DUxsq6Zf1ZrzJ",
+    },
+  ],
+  controller: "did:itn:Kmp7sVNtMrXZyiTKwgVWJK",
+}
+
+const newDIDDoc = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+  assertionMethod: [
+    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+  ],
+  authentication: [
+    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+      publicKeyMultibase:
+        "z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
+      publicKeyMultibase:
+        "z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
+    },
+    {
+      id: "did:itn:test#key-1",
+      type: "Ed25519VerificationKey2018",
+      controller: "did:itn:test",
+      publicKeyBase58: "FgF1dWCiADqWr97DUxsq6Zf1ZrzJ",
+    },
+  ],
+  controller: "did:itn:Kmp7sVNtMrXZyiTKwgVWJK",
+  service: [
+    {
+      id: "did:itn:info",
+      type: "Information",
+      serviceEndpoint: "https://example.com/info",
+    },
+  ],
+  alsoKnownAs: ["https://itn.example/"],
+}
+
+await agent.protocol(IdentityProtocol).update({ receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU", oldDIDDoc, newDIDDoc })
+```
+
+---
+
+
 #### Revoke
 
 Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method. Can only be invoked by the DID controller(s).
+
+##### `revoke()` API
+
+```ts
+revoke({ did: DIDString, receiver: DIDString | DIDDocument }):Promise<void>
+```
+* `did` - DID to be revoked.
+* `receiver` - receiver of the revocation, can be a DID string or a DID document.
+
+Sends `RevokeDIDMessage` to `receiver` and receive `RevokeDIDResponseMessage` in `revoke-did-response` handler.
+
+**example:**
+
+```typescript
+
+await agent
+  .protocol(IdentityProtocol)
+  .revoke({ did: "did:itn:8FcBrpSd5PTafaAzThsPbF", receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
+```
+
+---
 
 
 #### Recover
@@ -101,6 +294,24 @@ Constraints: Compliance with the DID data schema context file and DID method. Ca
 Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be invoked by the DID controller(s).
 
+##### `recover()` API
+
+```ts
+recover({ did: DIDString, receiver: DIDString | DIDDocument }): Promise<void>
+```
+* `did` - DID to be recovered.
+* `receiver` - receiver of the recovery, can be a DID string or a DID document.
+
+Sends `RecoverDIDMessage` to `receiver` and receive `RecoverDIDResponseMessage` in `recover-did-response` handler.
+
+**example:**
+
+```typescript
+
+await agent.protocol(IdentityProtocol).recover({ did: "did:itn:8FcBrpSd5PTafaAzThsPbF", receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
+```
+
+---
 
 #### Deactivate
 
