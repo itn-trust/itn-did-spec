@@ -382,7 +382,7 @@ Text - TBD
 
 **Note:** Privacy Considerations section ensures the ITN DID Method Privacy considerations complies with [W3C DID Method Privacy Requirements](https://w3c.github.io/did-core/#privacy-requirements)
 
-## Apendix
+## Appendix
 
 ### DID Document Manager
 
