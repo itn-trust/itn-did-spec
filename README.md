@@ -44,23 +44,42 @@ The format of ITN DID conforms to the [W3C DID Core specification](https://www.w
 
 ### Operations
 
-Text - TBD
+**Refer** [ITN Identity Protocol](https://github.com/itn-trust/itn/tree/master/packages/sdk/agent/src/protocol/itn.mobi/identity/1.0) for technical details. `DELETE LATER BEFORE CREATING PR`
+
 
 #### Create
 
-Text - TBD
+Description: Based on the DID data schema context file and DID method a ITN process anchors a DID and its DID document and delivers it to the requestor.
+Constraints: Compliance with the DID data schema and DID method requirements. Can only be invoked by the DID controller(s).
 
-#### Read
 
-Text - TBD
+#### Resolve
+
+Description: Based on the DID data schema context file and DID method a ITN process delivers a DID document in accordance with the W3C DID standard.
+Constraints: Compliance with the DID data schema context file and DID method requirements. Any entity should be able to invoke the process.
+
 
 #### Update
 
-Text - TBD
+Description: Based on the DID data schema context file and DID method a ITN process creates an updated DID document in accordance with the W3C DID standard.
+Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be called by the DID controller(s).
+
+
+#### Revoke
+
+Description: Based on the DID data schema context file and DID method a ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
+Constraints: Compliance with the DID data schema context file and DID method. Can only be invoked by the DID controller(s).
+
+
+#### Recover
+
+Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
+Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be invoked by the DID controller(s).
+
 
 #### Deactivate
 
-Text - TBD
+The ITN DID Method does not have a Deactivate operation.
 
 **Note:** Operations section ensures the ITN DID Method Operations complies with [W3C DID Method Operations](https://w3c.github.io/did-core/#method-operations)
 
