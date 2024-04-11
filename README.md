@@ -85,7 +85,7 @@ The ITN DID Method does not have a Deactivate operation.
 
 ## Security Considerations
 
-Text - TBD
+
 
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations complies with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
@@ -97,7 +97,75 @@ Text - TBD
 
 ## Apendix
 
-Text - TBD `Not sure if required`
+ITN SDK has crypto-ld-suite package that provides a set of functions to generate crypto keys for use with [@digitalbazaar/crypto-ld](https://github.com/digitalbazaar/crypto-ld) library, a set of functions to create and verify signatures for use with [@digitalbazaar/jsonld-signatures](https://github.com/digitalbazaar/jsonld-signatures) library and a set of utility functions for use with crypto keys.
+
+Cryptographic Key Types supported
+
+    Ed25519VerificationKey2018
+    Ed25519VerificationKey2020
+    X25519KeyAgreementKey2019
+    X25519KeyAgreementKey2020
+    EcdsaSecp256k1VerificationKey2019
+    EcdsaSecp256r1VerificationKey2020
+    EcdsaSecp384r1VerificationKey2020
+    EcdsaSecp521r1VerificationKey2020
+    RsaVerificationKey2018
+    Bls12381G1Key2020
+    Bls12381G2Key2020
+
+Supported curves are:
+
+    Ed25519
+    X25519
+    RSA
+    P-256
+    P-384
+    P-521
+    Bls12381G1
+    Bls12381G2
+    secp256k1
+
+Refer: [crypto-ld-suite](https://github.com/itn-trust/itn/tree/master/packages/sdk/crypto-ld-suite) `Not sure where to add and how to explain. Need some guidance.`
+____________
+
+## Message Encryptor
+
+Provides a set of functions to encrypt and decrypt DIDComm messages. Message Encryptor supports two forms of message
+encryption: Authenticated Sender Encryption (`authcrypt`) and Anonymous Sender Encryption (`anoncrypt`).
+Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct assurances of who the sender is.
+
+#### Message Encryptor supports the following curves for the keys involved in key agreement:
+
+| Curve  | Description                                                                                                                           |
+|--------|---------------------------------------------------------------------------------------------------------------------------------------|
+| X25519 | The underlying curve is actually Curve25519, however when used in the context of Diffie-Hellman<br/> the identifier of X25519 is used |
+| P-256  | NIST defined P-256 elliptic curve.                                                                                                    |
+| P-384  | NIST defined P-384 elliptic curve.                                                                                                    |
+| P-521  | NIST defined P-521 elliptic curve.                                                                                                    |
+
+##
+#### The following `AEAD` algorithms are supported for content encryption of the message:
+
+| Algorithm     | Description                                 |
+|---------------|---------------------------------------------|
+| A256CBC-HS512 | AES256-CBC + HMAC-SHA512 with a 512 bit key |
+| A256GCM       | AES256-GCM with a 256 bit key               |
+| XC20P         | XChaCha20Poly1305 with a 256 bit key        |
+
+##
+#### The following Key Wrapping Algorithms are supported to wrap shared secret key:
+| Algorithm       | Curve (epk crv)  | key type (epk kty) |
+|-----------------|------------------|--------------------|
+| ECDH-ES+A256KW  | P-256            | EC                 |
+| ECDH-ES+A256KW  | P-384            | EC                 |
+| ECDH-ES+A256KW  | P-521            | EC                 |
+| ECDH-ES+A256KW  | X25519           | OKP                |
+| ECDH-1PU+A256KW | P-256            | EC                 |
+| ECDH-1PU+A256KW | P-384            | EC                 |
+| ECDH-1PU+A256KW | P-521            | EC                 |
+| ECDH-1PU+A256KW | X25519           | OKP                |
+
+Refer: [Agent Services](https://github.com/itn-trust/itn/blob/master/packages/sdk/agent/src/service/README.md#agent-services) `Not sure where to add and how to explain. Need some guidance.`
 
 ## References
 
