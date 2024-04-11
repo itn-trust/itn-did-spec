@@ -19,7 +19,7 @@ The DID ITN Method Specification 1.0
 
 ## Abstract
 
-Integrated Trust Network (ITN) is a community-built and operated network. The objectove is to build a Federated Trust Layer (Core Services) and Business Automation Interoperability Infrastructure (User Agents) for ITN. The ITN Identifier is specified in accordance with the [W3C DID Core specification](https://www.w3.org/TR/did-core/).
+Integrated Trust Network (ITN) is a community-built and operated network. The objective is to build a Federated Trust Layer (Core Services) and Business Automation Interoperability Infrastructure (User Agents) for ITN. The ITN Identifier is specified in accordance with the [W3C DID Core specification](https://www.w3.org/TR/did-core/).
 
 ITN Identifier = ITN DID
 
@@ -33,7 +33,7 @@ ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyper
 with a flexible plugin architecture.
 
 Depending on which plugins and [DIDComm protocols](https://didcomm.org/search/?page=1) you use, your instance of ITN Agent can
-perform variety of roles:
+perform a variety of roles:
 
 * Create and manage cryptographic keys
 * Create and manage Decentralized Identifiers
@@ -43,12 +43,11 @@ perform variety of roles:
 Agent provides a common interface for plugins to expand its functionality. It is designed to be modular and extensible,
 so you can add new protocols, transports, and managers to fit your needs.
 
-Agent was written in [TypeScript](https://www.typescriptlang.org/) and runs natively in Node.js, Browsers and React Native.
+The agent was written in [TypeScript](https://www.typescriptlang.org/) and runs natively in Node.js, Browsers, and React Native.
 
-### ITN SDK
+## ITN SDK
 
-add image here...
-
+![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
 
 ## Conformance
 
@@ -64,7 +63,7 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 The ITN DID is derived as the sha3-256 hash of a random salt of sufficient entropy.
 
-The format of ITN DID conforms to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). It consists of `did:itn` prefix followed by `sha3-256(random salt)`. The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
+The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). It consists of `did:itn` prefix followed by `sha3-256(random salt)`. The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
 **Note:** Format section ensures the ITN DID Format complies with [W3C DID Method Syntax](https://w3c.github.io/did-core/#method-syntax)
 
@@ -75,25 +74,25 @@ The format of ITN DID conforms to the [W3C DID Core specification](https://www.w
 
 #### Create
 
-Description: Based on the DID data schema context file and DID method a ITN process anchors a DID and its DID document and delivers it to the requestor.
+Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
 Constraints: Compliance with the DID data schema and DID method requirements. Can only be invoked by the DID controller(s).
 
 
 #### Resolve
 
-Description: Based on the DID data schema context file and DID method a ITN process delivers a DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method an ITN process delivers a DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method requirements. Any entity should be able to invoke the process.
 
 
 #### Update
 
-Description: Based on the DID data schema context file and DID method a ITN process creates an updated DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method an ITN process creates an updated DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be called by the DID controller(s).
 
 
 #### Revoke
 
-Description: Based on the DID data schema context file and DID method a ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method. Can only be invoked by the DID controller(s).
 
 
@@ -111,9 +110,9 @@ The ITN DID Method does not have a Deactivate operation.
 
 ## Security Considerations
 
-For all `did:itn` DIDs, the initial asset creation and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if keys are different. DELETE THIS COMMENT LATER.`
+For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if the keys are different. DELETE THIS COMMENT LATER.`
 
-**Note:** Security Considerations section ensures the ITN DID Method Security considerations complies with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
+**Note:** Security Considerations section ensures the ITN DID Method Security considerations comply with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
 ## Privacy Considerations
 
