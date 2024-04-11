@@ -49,6 +49,11 @@ The agent was written in [TypeScript](https://www.typescriptlang.org/) and runs 
 
 ![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
 
+One of the protocols is Identity Protocol provides methods to manage DIDs.
+One of the managers is DID Document Manager provide a set of functions to manage DID Documents.
+
+`Conirm with Umed & Andreas - here I am only providing necessary information related to DIDs & DID Document. Is that okay?`
+
 ## Conformance
 
 The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted... TBD `Not sure if required`
@@ -149,6 +154,50 @@ await agent.protocol(IdentityProtocol).create({ creator: "did:itn:TW7PbLSe2Ws8FC
 
 Description: Based on the DID data schema context file and DID method an ITN process delivers a DID document in accordance with the W3C DID standard.
 Constraints: Compliance with the DID data schema context file and DID method requirements. Any entity should be able to invoke the process.
+
+##### `getDIDDoc()` API
+
+```ts
+getDIDDoc(did: DIDString): Promise<DIDDocument | null>
+```
+* `did` - DID Document identifier
+
+Retrieves the DID document for the specified DID.
+
+**example:**
+
+```typescript
+const didDoc = await agent.managers.didDoc.getDIDDoc("did:itn:RGNQknTkhX6eiFaw38DrLP")
+
+expect(didDoc).toBe({
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+  assertionMethod: [
+    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+  ],
+  authentication: [
+    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+      publicKeyMultibase: "z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+      publicKeyMultibase: "z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+    },
+  ],
+})
+```
+
+---
 
 
 #### Update
@@ -319,6 +368,8 @@ The ITN DID Method does not have a Deactivate operation.
 
 **Note:** Operations section ensures the ITN DID Method Operations complies with [W3C DID Method Operations](https://w3c.github.io/did-core/#method-operations)
 
+
+
 ## Security Considerations
 
 For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if the keys are different. DELETE THIS COMMENT LATER.`
@@ -332,6 +383,388 @@ Text - TBD
 **Note:** Privacy Considerations section ensures the ITN DID Method Privacy considerations complies with [W3C DID Method Privacy Requirements](https://w3c.github.io/did-core/#privacy-requirements)
 
 ## Apendix
+
+### DID Document Manager
+
+Provides a set of functions to manage DID Documents.
+
+#### `getDIDDoc()` API
+
+```ts
+getDIDDoc(did: DIDString): Promise<DIDDocument | null>
+```
+* `did` - DID Document identifier
+
+Retrieves the DID document for the specified DID.
+
+**example:**
+
+```typescript
+const didDoc = await agent.managers.didDoc.getDIDDoc("did:itn:RGNQknTkhX6eiFaw38DrLP")
+
+expect(didDoc).toBe({
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+  assertionMethod: [
+    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+  ],
+  authentication: [
+    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+      publicKeyMultibase: "z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+      publicKeyMultibase: "z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
+    },
+  ],
+})
+```
+
+#### `saveDIDDoc()` API
+
+```ts
+saveDIDDoc(args?: {
+  did?: DIDString
+  controller?: DIDDocument
+  operationId?: UUIDString
+  recoveryKey?: Ed25519VerificationKey2020
+  didDocument?: Partial<DIDDocument>
+  metadata?: {
+    name?: string
+    description?: string
+    tags?: string[]
+  }
+}): Promise<{
+  recoveryKey: Ed25519VerificationKey2020
+  didDoc: DIDDocument
+}>
+```
+* `args` - (optional) arguments for saving the DID document
+
+Saves the DID document along with the necessary keys and metadata into the wallet.
+If `operationId` provided, saves as a wallet operation until `wallet.commitChanges()` or `wallet.rollbackChanges()` is called.
+
+**example:**
+
+```typescript
+const { recoveryKey, didDoc } = await agent.managers.didDoc.createDID()
+
+expect(recoveryKey).toBe({
+  "@context": ["https://w3id.org/security/suites/ed25519-2020/v1"],
+  id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6Mksmhto6EJEHQ97ewZMv6hAcSEvWTw3dBLfu2vDax94qxu",
+  type: "Ed25519VerificationKey2020",
+  controller: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+  publicKeyMultibase: "z6Mksmhto6EJEHQ97ewZMv6hAcSEvWTw3dBLfu2vDax94qxu",
+  privateKeyMultibase: "z3u2i7PnbgcQvCxbBbmEYA4sfXmGhswEiYB5LHUAWsgFXaXW",
+  name: "Recovery Key",
+  description: "Used to recover identity.",
+  tags: [],
+})
+
+
+expect(didDoc).toBe({
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+  assertionMethod: [
+    "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+  ],
+  authentication: [
+    "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6LSpUuyUHWwpjyK59xE9d5ZrtDqN6ya7RzBjyPxgsAT2VNL",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+      publicKeyMultibase: "z6LSpUuyUHWwpjyK59xE9d5ZrtDqN6ya7RzBjyPxgsAT2VNL",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+      publicKeyMultibase: "z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+    },
+  ],
+})
+```
+
+---
+
+#### `updateDIDDoc()` API
+
+```ts
+ updateDIDDoc(
+    oldDIDDoc: DIDDocument,
+    newDIDDoc: DIDDocument,
+    operationId?: UUIDString,
+  ): Promise<void>
+```
+* `oldDIDDoc` - old DID Document
+* `newDIDDoc` - new DID Document
+* `operationId` - (optional) if provided, saves DID Document update as a wallet operation until `wallet.commitChanges()` or `wallet.rollbackChanges()` is called.
+
+Updates the DID Document.
+
+**example:**
+
+```typescript
+const oldDIDDoc = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: "did:itn:X9ns1DteHSXCL8AjgCvDhF",
+  assertionMethod: [
+    "did:itn:X9ns1DteHSXCL8AjgCvDhF#z6Mkn1HjxP4C9sq6P6ruemWe8eQZa3jPLAADLJUYJnZ9g5xj",
+  ],
+  authentication: [
+    "did:itn:X9ns1DteHSXCL8AjgCvDhF#z6Mkn1HjxP4C9sq6P6ruemWe8eQZa3jPLAADLJUYJnZ9g5xj",
+  ],
+  keyAgreement: [
+    {
+      id: "did:itn:X9ns1DteHSXCL8AjgCvDhF#z6LSenEkHyRX5sqDX7KsPFta9daxNNWNuNV9nZPHFLiF6343",
+      type: "X25519KeyAgreementKey2020",
+      controller: "did:itn:X9ns1DteHSXCL8AjgCvDhF",
+      publicKeyMultibase: "z6LSenEkHyRX5sqDX7KsPFta9daxNNWNuNV9nZPHFLiF6343",
+    },
+  ],
+  verificationMethod: [
+    {
+      id: "did:itn:X9ns1DteHSXCL8AjgCvDhF#z6Mkn1HjxP4C9sq6P6ruemWe8eQZa3jPLAADLJUYJnZ9g5xj",
+      type: "Ed25519VerificationKey2020",
+      controller: "did:itn:X9ns1DteHSXCL8AjgCvDhF",
+      publicKeyMultibase: "z6Mkn1HjxP4C9sq6P6ruemWe8eQZa3jPLAADLJUYJnZ9g5xj",
+    },
+  ],
+}
+
+const newDIDDoc = {
+  ...didDoc,
+  service: [
+    {
+      id: "did:itn:info",
+      type: "Information",
+      serviceEndpoint: "https://example.com/info",
+    },
+  ],
+}
+
+await agent.managers.didDoc.updateDIDDoc(oldDIDDoc, newDIDDoc)
+```
+
+---
+
+#### `revokeDID()` API
+
+```ts
+revokeDID(did: DIDString, operationId?: UUIDString): Promise<void> 
+```
+* `did` - DID to be revoked
+* `operationId` - (optional) if provided, saves DID Document revoke as a wallet operation until "wallet.commitChanges()" or "wallet.rollbackChanges()" is called.
+
+Revoke a DID by updating its associated DID Document.
+
+**example:**
+
+```typescript
+await agent.managers.didDoc.revokeDID("did:itn:4wqjsfTA8jghZK9Xw6TQDL")
+```
+
+---
+
+#### `recoverDID()` API
+
+```ts
+recoverDID(did: DIDString, operationId?: UUIDString): Promise<{
+  recoveryKey: Ed25519VerificationKey2020
+  didDocContent: DIDDocContent
+}> 
+```
+* `did` - DID to be recovered
+* `operationId` - (optional) if provided, saves DID Document revoke as a wallet operation until "wallet.commitChanges()" or "wallet.rollbackChanges()" is called.
+
+Recovers a DID by creating a new DID document, signing and encryption keys, and updating the existing DID document content
+in the wallet.
+
+
+**example:**
+
+```typescript
+const {
+  recoveryKey,
+  didDocContent,
+} = await wallet.didDocManager.recoverDID(
+  "did:itn:Aw8tt7G1AhSCHfBrsuzrJG")
+
+// new recovery key
+expect(recoveryKey).toBe(
+  {
+    "@context": ["https://w3id.org/security/suites/ed25519-2020/v1"],
+    id: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG#z6MkjsGqthRZLsYW3EaYW63iRbXFeGJftFmsA3Z1uJziSPq7",
+    type: "Ed25519VerificationKey2020",
+    controller: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG",
+    publicKeyMultibase: "z6MkjsGqthRZLsYW3EaYW63iRbXFeGJftFmsA3Z1uJziSPq7",
+    privateKeyMultibase: "z3u2W6p14p2mTmCCozMZqqdiSjYYtfFXfDjcutQDRTyDQjY7",
+    name: "Recovery Key",
+    description: "Used to recover identity.",
+    tags: [],
+  },
+)
+
+// new did document content
+expect(didDocContent).toBe(
+  {
+    id: "63caefb9-1af2-48e9-9f22-9cf04ed7558e",
+    type: "DIDDocument",
+    body: {
+      tags: [],
+      didDocument: {
+        "@context": [
+          "https://www.w3.org/ns/did/v1",
+        ],
+        id: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG",
+        assertionMethod: [
+          "did:itn:Aw8tt7G1AhSCHfBrsuzrJG#z6Mkuz76zmSj8Fb6PeE4AThcVTUeVADfBw4xQcGf6tYPx2SK",
+        ],
+        authentication: [
+          "did:itn:Aw8tt7G1AhSCHfBrsuzrJG#z6Mkuz76zmSj8Fb6PeE4AThcVTUeVADfBw4xQcGf6tYPx2SK",
+        ],
+        keyAgreement: [
+          {
+            id: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG#z6LSquqPkSUf9YHjoNYmuD6Jn5HxZihvXnXi9YrcJm42rMGT",
+            type: "X25519KeyAgreementKey2020",
+            controller: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG",
+            publicKeyMultibase: "z6LSquqPkSUf9YHjoNYmuD6Jn5HxZihvXnXi9YrcJm42rMGT",
+          },
+        ],
+        verificationMethod: [
+          {
+            id: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG#z6Mkuz76zmSj8Fb6PeE4AThcVTUeVADfBw4xQcGf6tYPx2SK",
+            type: "Ed25519VerificationKey2020",
+            controller: "did:itn:Aw8tt7G1AhSCHfBrsuzrJG",
+            publicKeyMultibase: "z6Mkuz76zmSj8Fb6PeE4AThcVTUeVADfBw4xQcGf6tYPx2SK",
+          },
+        ],
+        controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
+      },
+    },
+    created: 1699006922350,
+    updated: 1699006922350,
+  },
+)
+```
+
+---
+
+#### `getDIDResolutionResultContent()` API
+
+```ts
+getDIDResolutionResultContent(did: DIDString): Promise<DIDResolutionContent | undefined>
+```
+* `did` - DID Document to retrieve the resolution result
+
+Retrieves the content of a DID resolution result based on the provided DID.
+
+**example:**
+
+```typescript
+const didResolutionContent = await agent.managers.didDoc.getDIDResolutionResultContent("did:itn:BRZ2CKoq2kV1WiuMYZcBwu")
+
+expect(didResolutionContent).toBe({
+  id: "f0967614-8bc2-4f7d-9dba-76ba18205113",
+  type: "DIDResolutionResult",
+  body: {
+    "@context": ["https://w3id.org/did-resolution/v1"],
+    tags: [],
+    created: "2023-11-03T10:42:27.093Z",
+    expires: "2023-11-04T10:42:27.093Z",
+    didDocument: {
+      "@context": ["https://www.w3.org/ns/did/v1"],
+      id: "did:itn:B8G98VLFmv1o1h3CVF8fLQ",
+      assertionMethod: ["did:itn:BRZ2CKoq2kV1WiuMYZcBwu#z6MkgG2CF1h4gcjpxX5wW1z55NzJ6DQMmJnVNcagb4kCggMM"],
+      authentication: ["did:itn:BRZ2CKoq2kV1WiuMYZcBwu#z6MkgG2CF1h4gcjpxX5wW1z55NzJ6DQMmJnVNcagb4kCggMM"],
+      keyAgreement: [{
+        id: "did:itn:BRZ2CKoq2kV1WiuMYZcBwu#z6LSrGYukPKRADR2GZk25uAYwpZdF2qF75Xgm6dQS3gdEB1F",
+        type: "X25519KeyAgreementKey2020",
+        controller: "did:itn:BRZ2CKoq2kV1WiuMYZcBwu",
+        publicKeyMultibase: "z6LSrGYukPKRADR2GZk25uAYwpZdF2qF75Xgm6dQS3gdEB1F",
+      }],
+      verificationMethod: [{
+        id: "did:itn:BRZ2CKoq2kV1WiuMYZcBwu#z6MkgG2CF1h4gcjpxX5wW1z55NzJ6DQMmJnVNcagb4kCggMM",
+        type: "Ed25519VerificationKey2020",
+        controller: "did:itn:BRZ2CKoq2kV1WiuMYZcBwu",
+        publicKeyMultibase: "z6MkgG2CF1h4gcjpxX5wW1z55NzJ6DQMmJnVNcagb4kCggMM",
+      }],
+    },
+    didResolutionMetadata: {},
+    didDocumentMetadata: {
+      created: "2023-11-03T10:42:27.093Z",
+    },
+  },
+  created: 1699008147093,
+  updated: 1699008147093,
+})
+```
+
+---
+
+#### `saveDIDResolutionResult()` API
+
+```ts
+saveDIDResolutionResult(result: DIDResolutionResult): Promise<void>
+```
+
+* `result` - DID resolution result to be saved
+
+Saves the DID resolution result to the wallet.
+
+**example:**
+
+```typescript
+ const didResolutionResult = {
+  didDocument: {
+    "@context": ["https://www.w3.org/ns/did/v1"],
+    id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+    assertionMethod: [
+      "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+    ],
+    authentication: [
+      "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+    ],
+    keyAgreement: [
+      {
+        id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6LSpUuyUHWwpjyK59xE9d5ZrtDqN6ya7RzBjyPxgsAT2VNL",
+        type: "X25519KeyAgreementKey2020",
+        controller: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+        publicKeyMultibase: "z6LSpUuyUHWwpjyK59xE9d5ZrtDqN6ya7RzBjyPxgsAT2VNL",
+      },
+    ],
+    verificationMethod: [
+      {
+        id: "did:itn:RSF6nsbNFXW1Rpny3pKUuu#z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+        type: "Ed25519VerificationKey2020",
+        controller: "did:itn:RSF6nsbNFXW1Rpny3pKUuu",
+        publicKeyMultibase: "z6MkuFe4dc9njM5uBNQL2rhubLx5jZRjLP8ftuXwz45Mvg5F",
+      },
+    ],
+  },
+  contentType: undefined,
+  created: new Date().toISOString(),
+}
+
+await agent.managers.didDoc.saveDIDResolutionResult(didResolutionResult)
+```
+
+---
 
 ITN SDK has crypto-ld-suite package that provides a set of functions to generate crypto keys for use with [@digitalbazaar/crypto-ld](https://github.com/digitalbazaar/crypto-ld) library, a set of functions to create and verify signatures for use with [@digitalbazaar/jsonld-signatures](https://github.com/digitalbazaar/jsonld-signatures) library and a set of utility functions for use with crypto keys.
 
