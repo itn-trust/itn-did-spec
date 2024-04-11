@@ -19,9 +19,35 @@ The DID ITN Method Specification 1.0
 
 ## Abstract
 
-The ITN DID is specified in accordance with the [W3C DID Core specification](https://www.w3.org/TR/did-core/). 
+Integrated Trust Network (ITN) is a community-built and operated network. The objectove is to build a Federated Trust Layer (Core Services) and Business Automation Interoperability Infrastructure (User Agents) for ITN. The ITN Identifier is specified in accordance with the [W3C DID Core specification](https://www.w3.org/TR/did-core/).
+
+ITN Identifier = ITN DID
 
 The syntax of the identifier and accompanying data model used by the protocol is conformant with the [DID-CORE](https://www.w3.org/TR/did-core/) specification and shall be registered with the [DID-SPEC-REGISTRIES](https://www.w3.org/TR/did-spec-registries/).
+
+For a detailed read on DID and other DID method specifications, one can refer [WebOfTrustInfo - DID Primer](https://github.com/WebOfTrustInfo/rwot5-boston/blob/master/topics-and-advance-readings/did-primer.md)
+
+## Architecture Overview
+
+ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
+with a flexible plugin architecture.
+
+Depending on which plugins and [DIDComm protocols](https://didcomm.org/search/?page=1) you use, your instance of ITN Agent can
+perform variety of roles:
+
+* Create and manage cryptographic keys
+* Create and manage Decentralized Identifiers
+* Issue and verify Verifiable Credentials (VCs) and Presentations (VPs)
+* Communicate with other Agents over [DIDComm](https://identity.foundation/didcomm-messaging/spec/#discover-features-protocol-20)
+
+Agent provides a common interface for plugins to expand its functionality. It is designed to be modular and extensible,
+so you can add new protocols, transports, and managers to fit your needs.
+
+Agent was written in [TypeScript](https://www.typescriptlang.org/) and runs natively in Node.js, Browsers and React Native.
+
+### ITN SDK
+
+add image here...
 
 
 ## Conformance
@@ -85,7 +111,7 @@ The ITN DID Method does not have a Deactivate operation.
 
 ## Security Considerations
 
-
+For all `did:itn` DIDs, the initial asset creation and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if keys are different. DELETE THIS COMMENT LATER.`
 
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations complies with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
@@ -169,4 +195,4 @@ Refer: [Agent Services](https://github.com/itn-trust/itn/blob/master/packages/sd
 
 ## References
 
-Text - TBD `Not sure if required`
+[1] W3C Decentralized Identifiers (DIDs) v1.0, https://w3c.github.io/did-core/
