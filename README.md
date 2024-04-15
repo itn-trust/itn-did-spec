@@ -29,6 +29,35 @@ For a detailed read on DID and other DID method specifications, one can refer [W
 
 ## Architecture Overview
 
+The ITN is a permissioned network of nodes operated by ITN Node Operators.
+
+Each ITN Node is comprised of the following elements depicted in the figure below:
+- ITN Agent for Core Services ~ (former name used - Self Sovereign Digital Twin (SSDT) of the Core Services OR Core Services SSDT)
+- DLT Gateway: A NodeJS application integrating with the Core Services SSDT, Apache Kafka, and the different DLT networks of the ITN. In the next phase of implementation, the Apache Kafka instances will be connected via message replication to obtain a holistic picture of messages across the network.
+- DID Resolver: The DID resolver utilizes the Decentralized Identity Foundation DID resolver and is integrated with the Core Services SSDT.
+- Content Addressable Storage Network: Currently utilizing an append-only implementation of a Postgres DB with content-addressable hashes and replication between ITN Nodes. There is an implementation of peer-to-peer replication using the IPFS Cluster.
+- DLT Networks: It is comprised of a Hyperledger Fabric network and Arbitrum One EVM equivalent network (with more to follow, in particular, based on Integrated Trust Network (ITN) expansion).
+
+All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer through the ITN SDK in the [ITN GitHub repository](https://github.com/itn-trust/itn). An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
+
+![Getting Started](docs/images/ITN Architecture Overview.jpg)
+
+
+The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprised of the following elements:
+
+- API Endpoint Service for both REST APIs and [Decentralized Identity Foundation (DIF) DIDcomm](https://identity.foundation/didcomm-messaging/spec/) messaging protocol for integration with ITN Core Services, other Agents, and Legacy Applications via REST APIs
+- Authentication service utilizing [OAuth2 for REST APIs](https://oauth.net/2/) and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging
+- An implementation of the [W3C Universal Wallet](https://w3c-ccg.github.io/universal-wallet-interop-spec/) for key and document management
+- An implementation of the W3C Verifiable Credential Issuance and Verification standard both as REST APIs and as DIDcomm endpoints
+- Implementation of ITN Data Sharing APIs both as REST APIs and as DIDcomm endpoints
+- An implementation of ITN Core Services functionality via DIF DIDcomm
+- An implementation of the [W3C/DIF Encrypted Data Vault](https://identity.foundation/confidential-storage/) for document storage currently utilizing CouchDB with Leader-Leader replication
+
+Integration of an ITN Agent in any application is achieved through the ITN SDK.
+
+![Getting Started](docs/images/ITN Agent.jpg)
+
+
 ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
 with a flexible plugin architecture.
 
