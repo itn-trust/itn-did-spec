@@ -49,8 +49,8 @@ The agent was written in [TypeScript](https://www.typescriptlang.org/) and runs 
 
 ![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
 
-One of the protocols is Identity Protocol provides methods to manage DIDs.
-One of the managers is DID Document Manager provide a set of functions to manage DID Documents.
+The ITN SDK has an Identity Protocol provides methods to manage DIDs.
+The ITN SDK has a DID Document Manager provide a set of functions to manage DID Documents.
 
 `Conirm with Umed & Andreas - here I am only providing necessary information related to DIDs & DID Document. Is that okay?`
 
@@ -122,7 +122,15 @@ const agent = new Agent({
 #### Create
 
 Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
-Constraints: Compliance with the DID data schema and DID method requirements. Can only be invoked by the DID controller(s).
+Constraints: Can only be invoked by the DID controller(s).
+
+Requirements:
+
+- `creator` input parameter can be a DID String or a DID document.
+- The provided DID MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+`Note: Question to Umed -- as per below comments - if its just DID string - how & when DID Document is created then??`
 
 
 ##### `create()` API
@@ -153,57 +161,73 @@ await agent.protocol(IdentityProtocol).create({ creator: "did:itn:TW7PbLSe2Ws8FC
 #### Resolve
 
 Description: Based on the DID data schema context file and DID method an ITN process delivers a DID document in accordance with the W3C DID standard.
-Constraints: Compliance with the DID data schema context file and DID method requirements. Any entity should be able to invoke the process.
+Constraints: Any entity should be able to invoke the process.
 
-##### `getDIDDoc()` API
+Requirements:
 
-```ts
-getDIDDoc(did: DIDString): Promise<DIDDocument | null>
-```
-* `did` - DID Document identifier
-
-Retrieves the DID document for the specified DID.
+- A DID string MUST be provided as an input parameter.
+- The provided DID MUST be compliant with the did:itn method.
 
 **example:**
 
 ```typescript
-const didDoc = await agent.managers.didDoc.getDIDDoc("did:itn:RGNQknTkhX6eiFaw38DrLP")
+await agent.resolveDIDDoc("did:itn:NL28Bubaa8xUmhJAARNkNS")
+```
 
-expect(didDoc).toBe({
-  "@context": ["https://www.w3.org/ns/did/v1"],
-  id: "did:itn:RGNQknTkhX6eiFaw38DrLP",
-  assertionMethod: [
-    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
-  ],
-  authentication: [
-    "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
-  ],
-  keyAgreement: [
-    {
-      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
-      type: "X25519KeyAgreementKey2020",
-      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
-      publicKeyMultibase: "z6LSf7iSoxWXoRBjEHR3ZSHePgooDjRVZhAih59QUaHchPNB",
-    },
-  ],
-  verificationMethod: [
-    {
-      id: "did:itn:RGNQknTkhX6eiFaw38DrLP#z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
-      type: "Ed25519VerificationKey2020",
-      controller: "did:itn:RGNQknTkhX6eiFaw38DrLP",
-      publicKeyMultibase: "z6MkkFbwWFtiXE8ioC293Fzn2hXDR5jpMXDB9iWFwz5t8WF9",
-    },
-  ],
-})
+Response to above code will be a DID Document as below:
+
+```json
+{
+  "didDocument": {
+    "@context": [
+      "https://www.w3.org/ns/did/v1"
+    ],
+    "assertionMethod": [
+      "did:itn:NL28Bubaa8xUmhJAARNkNS#z6MkiYmb7ncfDAAhcxtAAGsm1oySq4KYJtsi2wHaoKAnmVXC"
+    ],
+    "authentication": [
+      "did:itn:NL28Bubaa8xUmhJAARNkNS#z6MkiYmb7ncfDAAhcxtAAGsm1oySq4KYJtsi2wHaoKAnmVXC"
+    ],
+    "id": "did:itn:NL28Bubaa8xUmhJAARNkNS",
+    "keyAgreement": [
+      {
+        "id": "did:itn:NL28Bubaa8xUmhJAARNkNS#z6LSd76Tk2UJ3RVxcTjYjZ8TfvHMQgZG5HmbKPmCidPXyTGZ",
+        "type": "X25519KeyAgreementKey2020",
+        "controller": "did:itn:NL28Bubaa8xUmhJAARNkNS",
+        "publicKeyMultibase": "z6LSd76Tk2UJ3RVxcTjYjZ8TfvHMQgZG5HmbKPmCidPXyTGZ"
+      }
+    ],
+    "verificationMethod": [
+      {
+        "id": "did:itn:NL28Bubaa8xUmhJAARNkNS#z6MkiYmb7ncfDAAhcxtAAGsm1oySq4KYJtsi2wHaoKAnmVXC",
+        "type": "Ed25519VerificationKey2020",
+        "controller": "did:itn:NL28Bubaa8xUmhJAARNkNS",
+        "publicKeyMultibase": "z6MkiYmb7ncfDAAhcxtAAGsm1oySq4KYJtsi2wHaoKAnmVXC"
+      }
+    ]
+  },
+  "didDocumentMetadata": {
+    "created": "2023-11-10T15:20:59Z",
+    "updated": "2023-11-10T15:20:59Z",
+    "deactivated": false,
+    "recoveryCommitment": "99cdefca761b58664641d3f0b89b4f1e04ad833b7a24a726e3424bc6c17f39a0"
+  },
+  "didResolutionMetadata": { }
+}
 ```
 
 ---
 
-
 #### Update
 
 Description: Based on the DID data schema context file and DID method an ITN process creates an updated DID document in accordance with the W3C DID standard.
-Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be called by the DID controller(s).
+Constraints: Can only be called by the DID controller(s).
+
+Requirements:
+
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 
 ##### `update()` API
@@ -314,7 +338,14 @@ await agent.protocol(IdentityProtocol).update({ receiver: "did:itn:TW7PbLSe2Ws8F
 #### Revoke
 
 Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
-Constraints: Compliance with the DID data schema context file and DID method. Can only be invoked by the DID controller(s).
+Constraints: Can only be invoked by the DID controller(s).
+
+Requirements:
+
+- `did` input parameter MUST be a DID string that has to be revoked.
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ##### `revoke()` API
 
@@ -341,7 +372,14 @@ await agent
 #### Recover
 
 Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
-Constraints: Compliance with the DID data schema context file and DID method requirements. Can only be invoked by the DID controller(s).
+Constraints: Can only be invoked by the DID controller(s).
+
+Requirements:
+
+- `did` input parameter MUST be a DID string that has to be recovered.
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ##### `recover()` API
 
@@ -364,7 +402,7 @@ await agent.protocol(IdentityProtocol).recover({ did: "did:itn:8FcBrpSd5PTafaAzT
 
 #### Deactivate
 
-The ITN DID Method does not have a Deactivate operation.
+The `revoke` operation also deactivate the DID.
 
 **Note:** Operations section ensures the ITN DID Method Operations complies with [W3C DID Method Operations](https://w3c.github.io/did-core/#method-operations)
 
