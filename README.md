@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 11, 2024
+**Latest Update:** April 15, 2024
 
 **Contributors & Editors:**
 
@@ -40,7 +40,7 @@ Each ITN Node is comprised of the following elements depicted in the figure belo
 
 All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer through the ITN SDK in the [ITN GitHub repository](https://github.com/itn-trust/itn). An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
 
-![Getting Started](docs/images/ITN Architecture Overview.jpg)
+![ITN Architecture Overview](./docs/images/ITN%20Architecture%20Overview.jpg)
 
 
 The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprised of the following elements:
@@ -55,7 +55,7 @@ The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprise
 
 Integration of an ITN Agent in any application is achieved through the ITN SDK.
 
-![Getting Started](docs/images/ITN Agent.jpg)
+![ITN Agent](./docs/images/ITN%20Agent.jpg)
 
 
 ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
