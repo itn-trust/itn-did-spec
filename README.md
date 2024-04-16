@@ -233,7 +233,7 @@ ITN DID can facilitate the establishment of secure communication channels betwee
 
 2. Replay
 
-VCs typically include timestamps & cryptogrphic signtaures to prevent replay attacks. Cryptographic signatures are generated using the cryptographic keys are defined in the corresponding DID Documents. Additionally, ITN DID can be combined with secure channels (e.g., HTTPS) to prevent unauthorized retransmission of captured communication.
+Digital signatures utilized between the ITN and a user utilize nonces and DLT transactions on either of the utilized networks utilize both chainIds and account nonces to prevent DLT transaction replays.
 
 3. Message Insertion
 
