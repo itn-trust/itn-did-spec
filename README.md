@@ -16,7 +16,6 @@ The DID ITN Method Specification 1.0
 3. [Parth Bhatt](https://github.com/bparth24)
 4. [Umed Khudoiberdiev](https://github.com/pleerock)
 
-
 ## Abstract
 
 Integrated Trust Network (ITN) is a community-built and operated network. The objective is to build a Federated Trust Layer (Core Services) and Business Automation Interoperability Infrastructure (User Agents) for ITN. The ITN Identifier is specified in accordance with the [W3C DID Core specification](https://www.w3.org/TR/did-core/).
@@ -32,6 +31,7 @@ For a detailed read on DID and other DID method specifications, one can refer [W
 The ITN is a permissioned network of nodes operated by ITN Node Operators.
 
 Each ITN Node is comprised of the following elements depicted in the figure below:
+
 - ITN Agent for Core Services ~ (former name used - Self Sovereign Digital Twin (SSDT) of the Core Services OR Core Services SSDT)
 - DLT Gateway: A NodeJS application integrating with the Core Services SSDT, Apache Kafka, and the different DLT networks of the ITN. In the next phase of implementation, the Apache Kafka instances will be connected via message replication to obtain a holistic picture of messages across the network.
 - DID Resolver: The DID resolver utilizes the Decentralized Identity Foundation DID resolver and is integrated with the Core Services SSDT.
@@ -41,7 +41,6 @@ Each ITN Node is comprised of the following elements depicted in the figure belo
 All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer through the ITN SDK in the [ITN GitHub repository](https://github.com/itn-trust/itn). An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
 
 ![ITN Architecture Overview](./docs/images/ITN%20Architecture%20Overview.jpg)
-
 
 The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprised of the following elements:
 
@@ -57,17 +56,16 @@ Integration of an ITN Agent in any application is achieved through the ITN SDK.
 
 ![ITN Agent](./docs/images/ITN%20Agent.jpg)
 
-
 ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
 with a flexible plugin architecture.
 
 Depending on which plugins and [DIDComm protocols](https://didcomm.org/search/?page=1) you use, your instance of ITN Agent can
 perform a variety of roles:
 
-* Create and manage cryptographic keys
-* Create and manage Decentralized Identifiers
-* Issue and verify Verifiable Credentials (VCs) and Presentations (VPs)
-* Communicate with other Agents over [DIDComm](https://identity.foundation/didcomm-messaging/spec/#discover-features-protocol-20)
+- Create and manage cryptographic keys
+- Create and manage Decentralized Identifiers
+- Issue and verify Verifiable Credentials (VCs) and Presentations (VPs)
+- Communicate with other Agents over [DIDComm](https://identity.foundation/didcomm-messaging/spec/#discover-features-protocol-20)
 
 Agent provides a common interface for plugins to expand its functionality. It is designed to be modular and extensible,
 so you can add new protocols, transports, and managers to fit your needs.
@@ -80,8 +78,6 @@ The agent was written in [TypeScript](https://www.typescriptlang.org/) and runs 
 
 The ITN SDK has an Identity Protocol provides methods to manage DIDs.
 The ITN SDK has a DID Document Manager provide a set of functions to manage DID Documents.
-
-`Conirm with Umed & Andreas - here I am only providing necessary information related to DIDs & DID Document. Is that okay?`
 
 ## Conformance
 
@@ -151,7 +147,6 @@ Requirements:
 
 ---
 
-
 #### Revoke
 
 Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
@@ -163,9 +158,7 @@ Requirements:
 - The provided DID string MUST be compliant with the did:itn method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
-
 ---
-
 
 #### Recover
 
@@ -183,7 +176,6 @@ Requirements:
 #### Deactivate
 
 The `revoke` operation also deactivate the DID.
-
 
 ## Sample DID Document
 
@@ -227,7 +219,6 @@ The `revoke` operation also deactivate the DID.
 }
 ```
 
-
 ## Security Considerations
 
 For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if the keys are different. DELETE THIS COMMENT LATER.`
@@ -237,13 +228,15 @@ For all `did:itn` DIDs, the initial asset creation, and subsequent updates are e
 ## Privacy Considerations
 
 ITN is only storing the following data:
+
 - Public Keys in DID documents stored in our CAS, and in Smart Contracts stored on our DLTs
 - Hashed data in Smart Contracts on our DLTs representing DID documents, in our CAS for our VC revocation lists, and aggregate application state data
 - Service endpoints in DID documents on our CAS
 
 In the ITN context, only Public Keys and Service Endpoints may refer to an individual. ITN ensures proper management in the following way:
+
 1. DID documents may be deleted by their controllers, and, therefore, access to DID documents from the outside by a 3rd party is no longer possible.
-2. While public keys and hashes of DID documents remain on the DLTs of the ITN, ITN will not maintain logs of IP addresses that requested ITN service operations, and, therefore, makes the correlation of a public key with personal data (the IP assigned to an individual’s router at a specific physical address by the ISP) from the point of view of the ITN, or an entity breaching the ITN, not possible. However, if a public key is used outside of the context of ITN more than once, then it may be subject to linkability to other personal data.   
+2. While public keys and hashes of DID documents remain on the DLTs of the ITN, ITN will not maintain logs of IP addresses that requested ITN service operations, and, therefore, makes the correlation of a public key with personal data (the IP assigned to an individual’s router at a specific physical address by the ISP) from the point of view of the ITN, or an entity breaching the ITN, not possible. However, if a public key is used outside of the context of ITN more than once, then it may be subject to linkability to other personal data.
 
 The reason why within ITN hashed data may be considered sufficiently anonymized is as follows: While hashed data may contain personal data through public keys or service endpoints in the DID documents, it is combined with randomized, non-personal data such as a DID itself, per European Commission (EC) guideline.
 
@@ -279,16 +272,13 @@ Supported curves are:
     Bls12381G2
     secp256k1
 
-Refer: [crypto-ld-suite](https://github.com/itn-trust/itn/tree/master/packages/sdk/crypto-ld-suite) `Not sure where to add and how to explain. Need some guidance.`
-____________
-
 ## Message Encryptor
 
 Provides a set of functions to encrypt and decrypt DIDComm messages. Message Encryptor supports two forms of message
 encryption: Authenticated Sender Encryption (`authcrypt`) and Anonymous Sender Encryption (`anoncrypt`).
 Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct assurances of who the sender is.
 
-#### Message Encryptor supports the following curves for the keys involved in key agreement:
+#### Message Encryptor supports the following curves for the keys involved in key agreement
 
 | Curve  | Description                                                                                                                           |
 |--------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -297,8 +287,7 @@ Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct 
 | P-384  | NIST defined P-384 elliptic curve.                                                                                                    |
 | P-521  | NIST defined P-521 elliptic curve.                                                                                                    |
 
-##
-#### The following `AEAD` algorithms are supported for content encryption of the message:
+#### The following `AEAD` algorithms are supported for content encryption of the message
 
 | Algorithm     | Description                                 |
 |---------------|---------------------------------------------|
@@ -306,8 +295,8 @@ Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct 
 | A256GCM       | AES256-GCM with a 256 bit key               |
 | XC20P         | XChaCha20Poly1305 with a 256 bit key        |
 
-##
-#### The following Key Wrapping Algorithms are supported to wrap shared secret key:
+#### The following Key Wrapping Algorithms are supported to wrap shared secret key
+
 | Algorithm       | Curve (epk crv)  | key type (epk kty) |
 |-----------------|------------------|--------------------|
 | ECDH-ES+A256KW  | P-256            | EC                 |
@@ -319,8 +308,6 @@ Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct 
 | ECDH-1PU+A256KW | P-521            | EC                 |
 | ECDH-1PU+A256KW | X25519           | OKP                |
 
-Refer: [Agent Services](https://github.com/itn-trust/itn/blob/master/packages/sdk/agent/src/service/README.md#agent-services) `Not sure where to add and how to explain. Need some guidance.`
-
 ## References
 
-[1] W3C Decentralized Identifiers (DIDs) v1.0, https://w3c.github.io/did-core/
+[1] W3C Decentralized Identifiers (DIDs) v1.0, <https://w3c.github.io/did-core/>
