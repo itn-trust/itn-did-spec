@@ -237,7 +237,7 @@ Digital signatures utilized between the ITN and a user utilize nonces and DLT tr
 
 3. Message Insertion
 
-VCs MUST be signed by the issuer, ensuring that any unauthorized insertion of messages would result in a signature mismatch and detection of tampering.
+Since ITN communication channels are using asymmetric encryption, the only way to insert a message would be to gain access to the private keys used for encryption, DID AuthN, and VC signatures.
 
 4. Deletion:
 
