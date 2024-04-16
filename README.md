@@ -38,11 +38,11 @@ Each ITN Node is comprised of the following elements depicted in the figure belo
 - Content Addressable Storage Network: Currently utilizing an append-only implementation of a Postgres DB with content-addressable hashes and replication between ITN Nodes. There is an implementation of peer-to-peer replication using the IPFS Cluster.
 - DLT Networks: It is comprised of a Hyperledger Fabric network and Arbitrum One EVM equivalent network (with more to follow, in particular, based on Integrated Trust Network (ITN) expansion).
 
-All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer through the ITN SDK in the [ITN GitHub repository](https://github.com/itn-trust/itn). An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
+All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer. An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
 
 ![ITN Architecture Overview](./docs/images/ITN%20Architecture%20Overview.jpg)
 
-The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprised of the following elements:
+The ITN Agent utilized in each ITN node is comprised of the following elements:
 
 - API Endpoint Service for both REST APIs and [Decentralized Identity Foundation (DIF) DIDcomm](https://identity.foundation/didcomm-messaging/spec/) messaging protocol for integration with ITN Core Services, other Agents, and Legacy Applications via REST APIs
 - Authentication service utilizing [OAuth2 for REST APIs](https://oauth.net/2/) and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging
@@ -50,9 +50,9 @@ The ITN Agent utilized in each ITN node is implemented in NodeJS and is comprise
 - An implementation of the W3C Verifiable Credential Issuance and Verification standard both as REST APIs and as DIDcomm endpoints
 - Implementation of ITN Data Sharing APIs both as REST APIs and as DIDcomm endpoints
 - An implementation of ITN Core Services functionality via DIF DIDcomm
-- An implementation of the [W3C/DIF Encrypted Data Vault](https://identity.foundation/confidential-storage/) for document storage currently utilizing CouchDB with Leader-Leader replication
+- An implementation of the [W3C/DIF Encrypted Data Vault](https://identity.foundation/confidential-storage/) for document storage
 
-Integration of an ITN Agent in any application is achieved through the ITN SDK.
+ITN Agent Integration can be achieved through an SDK, as utilized by the ITN.
 
 ![ITN Agent](./docs/images/ITN%20Agent.jpg)
 
@@ -70,8 +70,6 @@ perform a variety of roles:
 Agent provides a common interface for plugins to expand its functionality. It is designed to be modular and extensible,
 so you can add new protocols, transports, and managers to fit your needs.
 
-The agent was written in [TypeScript](https://www.typescriptlang.org/) and runs natively in Node.js, Browsers, and React Native.
-
 ## ITN SDK
 
 ![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
@@ -81,7 +79,7 @@ The ITN SDK has a DID Document Manager provide a set of functions to manage DID 
 
 ## Conformance
 
-The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted... TBD `Not sure if required`
+The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this document are to be interpreted according to [RFC2119](https://datatracker.ietf.org/doc/html/rfc2119)`
 
 ## Terminology
 
@@ -222,6 +220,45 @@ The `revoke` operation also deactivate the DID.
 ## Security Considerations
 
 For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if the keys are different. DELETE THIS COMMENT LATER.`
+
+- Authentication service utilizing [OAuth2](https://oauth.net/2/) for REST APIs and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging
+- Keys are specified in the DID Document in Verification Methods object for various Verification Relationships.
+- ITN heavily relies on W3C DIDs (Decentralized Identifiers) and VCs (Verifiable Credentials) employ cryptographic mechanisms and decentralized trust models to mitigate the risks associated with various forms of attacks.
+- Within ITN, actors of [W3C VC Data Model](https://www.w3.org/TR/vc-data-model-2.0/) - Issuer, Holder, and Verifier MUST be an ITN DID associated with corresponding DID Document.   
+
+Here's how ITN can prevent the specific attacks outlined:
+
+1. Eavesdropping
+
+ITN DID can facilitate the establishment of secure communication channels between parties by encrypting messages exchanged between DIDs using cryptographic keys defined in the corresponding DID Documents. DIDs and VCs use cryptographic signatures to ensure that communication between parties is encrypted and authenticated. This prevents unauthorized interception and eavesdropping of sensitive information.
+
+2. Replay
+
+VCs typically include timestamps & cryptogrphic signtaures to prevent replay attacks. Cryptographic signatures are generated using the cryptographic keys are defined in the corresponding DID Documents. Additionally, ITN DID can be combined with secure channels (e.g., HTTPS) to prevent unauthorized retransmission of captured communication.
+
+3. Message Insertion
+
+VCs MUST be signed by the issuer, ensuring that any unauthorized insertion of messages would result in a signature mismatch and detection of tampering.
+
+4. Deletion:
+
+`Need help here... not sure`
+
+5. Modification:
+
+VCs ensure data integrity, as any unauthorized modification of messages would result in a signature mismatch and detection of tampering.
+
+6. Denial of Service (DoS):
+
+DIDs and VCs do not inherently prevent DoS attacks, but service providers can implement rate limiting, access controls, and other security measures to mitigate the impact of DoS attacks.
+
+7. Amplification:
+
+DIDs and VCs themselves do not amplify attacks. However, service providers implementing DID and VC systems should follow best practices to prevent abuse and exploitation of their services.
+
+8. Man-in-the-Middle (MitM):
+
+DIDs and VCs use cryptographic techniques such as Decentralized public key infrastructure (DPKI) and cyrptographic signatures to prevent unauthorized interception and manipulation of communication between parties. By verifying cryptographic signatures associated with DIDs, parties can ensure the authenticity and integrity of messages, mitigating the risk of MitM attacks.
 
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations comply with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
