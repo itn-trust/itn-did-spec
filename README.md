@@ -241,7 +241,7 @@ Since ITN communication channels are using asymmetric encryption, the only way t
 
 4. Deletion:
 
-`Need help here... not sure`
+The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical. 
 
 5. Modification:
 
