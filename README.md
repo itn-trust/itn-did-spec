@@ -96,57 +96,20 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 ### Format
 
-The ITN DID is derived as the sha3-256 hash of a random salt of sufficient entropy.
+The ITN DID is derived as follow:
 
-The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). It consists of `did:itn` prefix followed by `sha3-256(random salt)`. The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
+- A random 32 byte string is generated
+- The seed is hashed using sha512
+- An Ed25519 key pair is generated from the hash. The key pair will be used as the recovery key pair
+- The uuid of the did:itn is the base58 encoded value of public keys hexadecimal value
+
+The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
 **Note:** Format section ensures the ITN DID Format complies with [W3C DID Method Syntax](https://w3c.github.io/did-core/#method-syntax)
 
 ### Operations
 
 Identity Protocol provides methods to manage DIDs.
-
-#### Usage of Identity Protocols
-
-```typescript
-import { IdentityProtocol, Agent } from "@itn-trust/agent"
-
-const identityProtocol = new IdentityProtocol({
-  "create-did": async (message: CreateDIDMessage, next) => {
-    // handle CreateDIDMessage
-  },
-  "create-did-response": async (message: CreateDIDResponseMessage, next) => {
-    // handle CreateDIDResponseMessage
-  },
-  "update-did": async (message: UpdateDIDMessage, next) => {
-    // handle UpdateDIDMessage
-  },
-  "update-did-response": async (message: UpdateDIDResponseMessage, next) => {
-    // handle UpdateDIDResponseMessage
-  },
-  "revoke-did": async (message: RevokeDIDMessage, next) => {
-    // handle RevokeDIDMessage
-  },
-  "revoke-did-response": async (message: RevokeDIDResponseMessage, next) => {
-    // handle RevokeDIDResponseMessage
-  },
-  "recover-did": async (message: RecoverDIDMessage, next) => {
-    // handle RecoverDIDMessage
-  },
-  "recover-did-response": async (message: RecoverDIDResponseMessage, next) => {
-    // handle RecoverDIDResponseMessage
-  },
-})
-
-const agent = new Agent({
-  // ...
-  protocols: [identityProtocol],
-})
-```
-
-**Refer** [ITN Identity Protocol](https://github.com/itn-trust/itn/tree/master/packages/sdk/agent/src/protocol/itn.mobi/identity/1.0) for technical details. `DELETE LATER BEFORE CREATING PR`
-
----
 
 #### Create
 
@@ -160,30 +123,6 @@ Requirements:
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 `Note: Question to Umed -- as per below comments - if its just DID string - how & when DID Document is created then??`
-
-
-##### `create()` API
-
-```ts
-create({
-  creator: DIDString | DIDDocument,
-  newDID?: {
-    didDoc: DIDDocument,
-    recoveryKey: Ed25519VerificationKey2020,
-  }
-}): Promise<DIDDocument>
-```
-* `creator` - creator of the new DID, can be a DID string or DID document.
-* `newDID.didDoc` - (optional) a pre-created DID Document.
-* `newDID.recoveryKey` - (optional) a pre-created DID Document's recovery key.
-
-Sends `CreateDIDMessage` to `creator` and receives `CreateDIDResponseMessage` message in `create-did-response` handler.
-
-**example:**
-
-```typescript
-await agent.protocol(IdentityProtocol).create({ creator: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
-```
 
 ---
 
@@ -258,109 +197,6 @@ Requirements:
 - The provided DID string MUST be compliant with the did:itn method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
-
-##### `update()` API
-
-```ts
-update({
-  receiver: DIDString | DIDDocument,
-  oldDIDDoc: DIDDocument,
-  newDIDDoc: DIDDocument,
-}):Promise<void>
-```
-* `receiver` - receiver of the update, can be a DID string or a DID document.
-* `oldDIDDoc` - old DID Document to be updated
-* `newDIDDoc` - new DID document containing the updates.
-
-Sends `UpdateDIDMessage` to `receiver` and receives `UpdateDIDResponseMessage` message in `update-did-response` handler.
-
-**example:**
-
-```typescript
-
-const oldDIDDoc = {
-  "@context": ["https://www.w3.org/ns/did/v1"],
-  id: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-  assertionMethod: [
-    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-  ],
-  authentication: [
-    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-  ],
-  keyAgreement: [
-    {
-      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
-      type: "X25519KeyAgreementKey2020",
-      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-      publicKeyMultibase:
-        "z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
-    },
-  ],
-  verificationMethod: [
-    {
-      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-      type: "Ed25519VerificationKey2020",
-      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-      publicKeyMultibase:
-        "z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-    },
-    {
-      id: "did:itn:test#key-1",
-      type: "Ed25519VerificationKey2018",
-      controller: "did:itn:test",
-      publicKeyBase58: "FgF1dWCiADqWr97DUxsq6Zf1ZrzJ",
-    },
-  ],
-  controller: "did:itn:Kmp7sVNtMrXZyiTKwgVWJK",
-}
-
-const newDIDDoc = {
-  "@context": ["https://www.w3.org/ns/did/v1"],
-  id: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-  assertionMethod: [
-    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-  ],
-  authentication: [
-    "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-  ],
-  keyAgreement: [
-    {
-      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
-      type: "X25519KeyAgreementKey2020",
-      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-      publicKeyMultibase:
-        "z6LScBaA4yAZowVqszMCBd5zscDs6Vk4npARXGBw29ewngNX",
-    },
-  ],
-  verificationMethod: [
-    {
-      id: "did:itn:8FcBrpSd5PTafaAzThsPbF#z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-      type: "Ed25519VerificationKey2020",
-      controller: "did:itn:8FcBrpSd5PTafaAzThsPbF",
-      publicKeyMultibase:
-        "z6MkvXb9Cv5iaMEtn7PtJA5bg7Fnz3nT3AVU59ViAUJLtRrH",
-    },
-    {
-      id: "did:itn:test#key-1",
-      type: "Ed25519VerificationKey2018",
-      controller: "did:itn:test",
-      publicKeyBase58: "FgF1dWCiADqWr97DUxsq6Zf1ZrzJ",
-    },
-  ],
-  controller: "did:itn:Kmp7sVNtMrXZyiTKwgVWJK",
-  service: [
-    {
-      id: "did:itn:info",
-      type: "Information",
-      serviceEndpoint: "https://example.com/info",
-    },
-  ],
-  alsoKnownAs: ["https://itn.example/"],
-}
-
-await agent.protocol(IdentityProtocol).update({ receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU", oldDIDDoc, newDIDDoc })
-```
-
 ---
 
 
@@ -376,24 +212,6 @@ Requirements:
 - The provided DID string MUST be compliant with the did:itn method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
-##### `revoke()` API
-
-```ts
-revoke({ did: DIDString, receiver: DIDString | DIDDocument }):Promise<void>
-```
-* `did` - DID to be revoked.
-* `receiver` - receiver of the revocation, can be a DID string or a DID document.
-
-Sends `RevokeDIDMessage` to `receiver` and receive `RevokeDIDResponseMessage` in `revoke-did-response` handler.
-
-**example:**
-
-```typescript
-
-await agent
-  .protocol(IdentityProtocol)
-  .revoke({ did: "did:itn:8FcBrpSd5PTafaAzThsPbF", receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
-```
 
 ---
 
@@ -409,23 +227,6 @@ Requirements:
 - `receiver` input parameter can be a DID string or a DID Document.
 - The provided DID string MUST be compliant with the did:itn method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
-
-##### `recover()` API
-
-```ts
-recover({ did: DIDString, receiver: DIDString | DIDDocument }): Promise<void>
-```
-* `did` - DID to be recovered.
-* `receiver` - receiver of the recovery, can be a DID string or a DID document.
-
-Sends `RecoverDIDMessage` to `receiver` and receive `RecoverDIDResponseMessage` in `recover-did-response` handler.
-
-**example:**
-
-```typescript
-
-await agent.protocol(IdentityProtocol).recover({ did: "did:itn:8FcBrpSd5PTafaAzThsPbF", receiver: "did:itn:TW7PbLSe2Ws8FCx675oFUU" })
-```
 
 ---
 
