@@ -249,7 +249,7 @@ Modifications of the DID anchoring transactions on the two DLTs cannot be modifi
 
 6. Denial of Service (DoS):
 
-DIDs and VCs do not inherently prevent DoS attacks, but service providers can implement rate limiting, access controls, and other security measures to mitigate the impact of DoS attacks.
+The ITN can operate as long as one honest node is operational. This means that besides typical (D)DoS protections enterprises utilize, the node redundancies in the network mitigate a DoS attack.
 
 7. Amplification:
 
