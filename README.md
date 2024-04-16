@@ -245,7 +245,7 @@ The DLT transactions on the two anchor DLTs cannot be deleted and DID document e
 
 5. Modification:
 
-VCs ensure data integrity, as any unauthorized modification of messages would result in a signature mismatch and detection of tampering.
+Modifications of the DID anchoring transactions on the two DLTs cannot be modified. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless. 
 
 6. Denial of Service (DoS):
 
