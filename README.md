@@ -224,7 +224,6 @@ For all `did:itn` DIDs, the initial asset creation, and subsequent updates are e
 - Authentication service utilizing [OAuth2](https://oauth.net/2/) for REST APIs and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging
 - Keys are specified in the DID Document in Verification Methods object for various Verification Relationships.
 - ITN heavily relies on W3C DIDs (Decentralized Identifiers) and VCs (Verifiable Credentials) cryptographic mechanisms and decentralized trust models to mitigate the risks associated with various attacks.
-- Within ITN, actors of [W3C VC Data Model](https://www.w3.org/TR/vc-data-model-2.0/) - Issuer, Holder, and Verifier MUST be an ITN DID associated with corresponding DID Document.   
 
 Here's how ITN can prevent the specific attacks outlined:
 
