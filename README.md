@@ -257,7 +257,7 @@ DIDs and VCs themselves do not amplify attacks. However, service providers imple
 
 8. Man-in-the-Middle (MitM):
 
-DIDs and VCs use cryptographic techniques such as Decentralized public key infrastructure (DPKI) and cyrptographic signatures to prevent unauthorized interception and manipulation of communication between parties. By verifying cryptographic signatures associated with DIDs, parties can ensure the authenticity and integrity of messages, mitigating the risk of MitM attacks.
+Asymmetric encryption of all ITN communication channels ensures a high degree of safety against MitM attacks unless the relevant private keys are compromised.
 
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations comply with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
