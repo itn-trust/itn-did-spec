@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 15, 2024
+**Latest Update:** April 16, 2024
 
 **Contributors & Editors:**
 
@@ -119,7 +119,6 @@ Identity Protocol provides methods to manage DIDs.
 #### Create
 
 Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
-Constraints: Can only be invoked by the DID controller(s).
 
 Requirements:
 
@@ -127,27 +126,66 @@ Requirements:
 - The provided DID MUST be compliant with the did:itn method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
-`Note: Question to Umed -- as per below comments - if its just DID string - how & when DID Document is created then??`
-
 ---
 
 #### Resolve
 
 Description: Based on the DID data schema context file and DID method an ITN process delivers a DID document in accordance with the W3C DID standard.
-Constraints: Any entity should be able to invoke the process.
 
 Requirements:
 
 - A DID string MUST be provided as an input parameter.
 - The provided DID MUST be compliant with the did:itn method.
 
-**example:**
+---
 
-```typescript
-await agent.resolveDIDDoc("did:itn:NL28Bubaa8xUmhJAARNkNS")
-```
+#### Update
 
-Response to above code will be a DID Document as below:
+Description: Based on the DID data schema context file and DID method an ITN process creates an updated DID document in accordance with the W3C DID standard.
+
+Requirements:
+
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+---
+
+
+#### Revoke
+
+Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
+
+Requirements:
+
+- `did` input parameter MUST be a DID string that has to be revoked.
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+
+---
+
+
+#### Recover
+
+Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
+
+Requirements:
+
+- `did` input parameter MUST be a DID string that has to be recovered.
+- `receiver` input parameter can be a DID string or a DID Document.
+- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+---
+
+#### Deactivate
+
+The `revoke` operation also deactivate the DID.
+
+
+## Sample DID Document
 
 ```json
 {
@@ -189,58 +227,6 @@ Response to above code will be a DID Document as below:
 }
 ```
 
----
-
-#### Update
-
-Description: Based on the DID data schema context file and DID method an ITN process creates an updated DID document in accordance with the W3C DID standard.
-Constraints: Can only be called by the DID controller(s).
-
-Requirements:
-
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
-- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
-
----
-
-
-#### Revoke
-
-Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
-Constraints: Can only be invoked by the DID controller(s).
-
-Requirements:
-
-- `did` input parameter MUST be a DID string that has to be revoked.
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
-- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
-
-
----
-
-
-#### Recover
-
-Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
-Constraints: Can only be invoked by the DID controller(s).
-
-Requirements:
-
-- `did` input parameter MUST be a DID string that has to be recovered.
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
-- The provided DID document MUST be compliant with the DID V1.0 DID document specification.
-
----
-
-#### Deactivate
-
-The `revoke` operation also deactivate the DID.
-
-**Note:** Operations section ensures the ITN DID Method Operations complies with [W3C DID Method Operations](https://w3c.github.io/did-core/#method-operations)
-
 
 ## Security Considerations
 
@@ -249,14 +235,6 @@ For all `did:itn` DIDs, the initial asset creation, and subsequent updates are e
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations comply with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
 ## Privacy Considerations
-
-The ITN can be classified as a data processor because 
-1. in its business model, the ITN only deals with enterprises and not individuals, and, 
-2. because the ITN does not determine the purpose and the means of data processing 
-
-While it is true that the ITN determines the means of data processing, because of its federated nature, only the data controller can authorize data processing, in other words, determine its purpose.
-
-### What Data is ITN storing and what does that mean with regard to data privacy?
 
 ITN is only storing the following data:
 - Public Keys in DID documents stored in our CAS, and in Smart Contracts stored on our DLTs
@@ -267,10 +245,7 @@ In the ITN context, only Public Keys and Service Endpoints may refer to an indiv
 1. DID documents may be deleted by their controllers, and, therefore, access to DID documents from the outside by a 3rd party is no longer possible.
 2. While public keys and hashes of DID documents remain on the DLTs of the ITN, ITN will not maintain logs of IP addresses that requested ITN service operations, and, therefore, makes the correlation of a public key with personal data (the IP assigned to an individual’s router at a specific physical address by the ISP) from the point of view of the ITN, or an entity breaching the ITN, not possible. However, if a public key is used outside of the context of ITN more than once, then it may be subject to linkability to other personal data.   
 
-The reason why within ITN hashed data may be considered sufficiently anonymized is as follows: While hashed data may contain personal data through public keys or service endpoints in the DID documents, it is combined with randomized, non-personal data such as a DID itself, per EC guideline.
-
-Note that the permissioned DLTs of the ITN are not directly accessible from the outside by 3rd parties.
-
+The reason why within ITN hashed data may be considered sufficiently anonymized is as follows: While hashed data may contain personal data through public keys or service endpoints in the DID documents, it is combined with randomized, non-personal data such as a DID itself, per European Commission (EC) guideline.
 
 **Note:** Privacy Considerations section ensures the ITN DID Method Privacy considerations complies with [W3C DID Method Privacy Requirements](https://w3c.github.io/did-core/#privacy-requirements)
 
