@@ -253,7 +253,7 @@ The ITN can operate as long as one honest node is operational. This means that b
 
 7. Amplification:
 
-DIDs and VCs themselves do not amplify attacks. However, service providers implementing DID and VC systems should follow best practices to prevent abuse and exploitation of their services.
+All DID operations apart from DID creation require DID AuthN. Therefore, each attack on a DID operation endpoint requires a DID and a secure communications channel. Hence, any attacks are limited to that established channel which can be disconnected at any time by an Operator. Lastly, the DID creation operation also requires establishing a secure communications channel which again restricts any attack to that channel, and, therefore, mitigation is as already mentioned. DOSing a channel would lead to a blacklisting of the malicious DID and a new DID would have to be created to perform an attack. Since the network only requires one honestly operating node, attacks by individual nodes would be recognized by other network nodes and access to that node can be easily removed by each node operator in their node, isolating the malicious node. And since network transactions have to be reimbursed to the ITN as an organization, spamming attacks of a compromised node lead to economic damage to the Operator operating the malicious node. This is an economic security guarantee since all Node Operators are known legal entities to which exists legal recourse. 
 
 8. Man-in-the-Middle (MitM):
 
