@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 16, 2024
+**Latest Update:** April 17, 2024
 
 **Contributors & Editors:**
 
@@ -83,13 +83,13 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 ## Terminology
 
-1. ITN - Integrated Trust Network
-2. EDV - Encrypted Data Vault
-3. CAS - Content Addressable Storage
-4. DLT - Distributed Ledger Network
-5. DID - Decentralized Identifier
-6. VC - Verifiable Credentials
-7. VP - Verifiable Presentations
+1. Integrated Trust Network (ITN) is a block-chain based, protocol-agnostic, federated network delivering decentralized identity services for a new generation of secure digital commerce. ITN provides decentralized digital infrastructure as the required core trust services of governance, authority, identity, & assurance for multi-party business ecosystems.
+2. Encrypted Data Vault (EDV) for document storage.
+3. Content Addressable Storage (CAS) is an append-only implementation of a Postgres DB with content-addressable hashes and replication between ITN Nodes.
+4. Distributed Ledger Technology (DLT) (also called a distributed ledger or shared ledger) is the consensus of replicated, shared, and synchronized digital data that is geographically spread (distributed) across many sites, countries, or institutions. A distributed ledger requires peer-to-peer network and consensus algorithms to ensure the ledger is reliably replicated across nodes. Blockchains are the most well-known example.
+5. Decentralized Identifier (DID) is a globally unique identifier that can be resolved to a DID Document, or de-referenced on a specific distributed ledger network, much like a URL on the Internet.
+6. Verifiable Credential (VC) is a tamper-evident credential that has authorship that can be cryptographically verified. Verifiable credentials can be used to build verifiable presentations, which can also be cryptographically verified.
+7. Verifiable Presentation (VP) is a tamper-evident presentation encoded in such a way that authorship of the data can be trusted after a process of cryptographic verification.
 
 ## DID ITN Method Specification
 
@@ -100,7 +100,7 @@ The ITN DID is derived as follow:
 - A random 32 byte string is generated
 - The seed is hashed using sha512
 - An Ed25519 key pair is generated from the hash. The key pair will be used as the recovery key pair
-- The uuid of the did:itn is the base58 encoded value of public keys hexadecimal value
+- The identifier of the did:itn is the first 16 bytes of the public key encoded into Base58 format.
 
 The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
@@ -208,10 +208,20 @@ The `revoke` operation also deactivate the DID.
     ]
   },
   "didDocumentMetadata": {
-    "created": "2023-11-10T15:20:59Z",
-    "updated": "2023-11-10T15:20:59Z",
+    "created": "2024-04-16T14:46:33Z",
+    "updated": "2024-04-16T14:46:33Z",
     "deactivated": false,
-    "recoveryCommitment": "99cdefca761b58664641d3f0b89b4f1e04ad833b7a24a726e3424bc6c17f39a0"
+    "recoveryCommitment": "b45a0730f9c3227eae0338c8f95e140cff12393e90272fd32f2f21dadd242df0",
+    "hlfProof": {
+        "dataHash": "a440e6586566c3370cf968a8fbee40620fc9ac70e2bc2d2c482902576183f30e",
+        "blockNumber": "19519",
+        "transactionId": "812cbef8d667c28e939e3ee8f46fe7550f11b6c0042ae8bc3c7965c7e93a262f"
+    },
+    "evmProof": {
+        "blockHash": "0xadddd6ae2eddbe50117357e8fbcd3921c4b0c6e3be2859a0cc9a75920bf876e3",
+        "blockNumber": 34291384,
+        "txHash": "0x4da901b643c05025c262fff27c80f0a30cb635783d057bebd79ef4f5cfed07e7"
+    }
   },
   "didResolutionMetadata": { }
 }
@@ -219,11 +229,17 @@ The `revoke` operation also deactivate the DID.
 
 ## Security Considerations
 
-For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism. `Confirm With Umed & Andreas - if the keys are different. DELETE THIS COMMENT LATER.`
+For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism.
 
-- Authentication service utilizing [OAuth2](https://oauth.net/2/) for REST APIs and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging
-- Keys are specified in the DID Document in Verification Methods object for various Verification Relationships.
+@AlexMesser @pleerock can you - `Confirm - if the keys are different in the above line. DELETE THIS COMMENT LATER.`
+
 - ITN heavily relies on W3C DIDs (Decentralized Identifiers) and VCs (Verifiable Credentials) cryptographic mechanisms and decentralized trust models to mitigate the risks associated with various attacks.
+- Authentication service utilizing [OAuth2](https://oauth.net/2/) for REST APIs and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging.
+- Authentication is involved, particularly user-host authentication, the security characteristics are those of OAuth2 and DIDCom 2.0.
+- Beyond the residual risks specified in the utilized authentication and authorization protocols, there are the normal implementation security risks that should be addressed through a security audit of any implementation.
+- ITN DID Method relies on cryptographic protection mechanisms, ensuring that DID AuthN for all endpoints and communication channels and asymmetric encryption for all data.
+- Only the private keys are held in secret and that is up to the user to implement. ITN nodes employ the EDV standard for secret securing including Secure Hardware Elements (HSMs).
+- Keys are specified in the DID Document in Verification Methods object for various Verification Relationships.
 
 Here's how ITN can prevent the specific attacks outlined:
 
