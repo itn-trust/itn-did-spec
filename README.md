@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 17, 2024
+**Latest Update:** April 18, 2024
 
 **Contributors & Editors:**
 
@@ -33,9 +33,9 @@ The ITN is a permissioned network of nodes operated by ITN Node Operators.
 Each ITN Node is comprised of the following elements depicted in the figure below:
 
 - ITN Agent for Core Services ~ (former name used - Self Sovereign Digital Twin (SSDT) of the Core Services OR Core Services SSDT)
-- DLT Gateway: A NodeJS application integrating with the Core Services SSDT, Apache Kafka, and the different DLT networks of the ITN. In the next phase of implementation, the Apache Kafka instances will be connected via message replication to obtain a holistic picture of messages across the network.
+- DLT Gateway: An application integrating with the Core Services SSDT, Apache Kafka, and the different DLT networks of the ITN.
 - DID Resolver: The DID resolver utilizes the Decentralized Identity Foundation DID resolver and is integrated with the Core Services SSDT.
-- Content Addressable Storage Network: Currently utilizing an append-only implementation of a Postgres DB with content-addressable hashes and replication between ITN Nodes. There is an implementation of peer-to-peer replication using the IPFS Cluster.
+- Content Addressable Storage Network: A database with content-addressable hashes and replication between ITN Nodes. Additionally, supports peer-to-peer replication.
 - DLT Networks: It is comprised of a Hyperledger Fabric network and Arbitrum One EVM equivalent network (with more to follow, in particular, based on Integrated Trust Network (ITN) expansion).
 
 All applications external to the ITN and wishing to utilize the ITN Core Services must implement an ITN Agent as their abstraction layer. An ITN Agent represents a user’s capabilities on ITN and serves as an abstraction and integration layer between ITN and other applications/networks.
@@ -74,8 +74,7 @@ so you can add new protocols, transports, and managers to fit your needs.
 
 ![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
 
-The ITN SDK has an Identity Protocol provides methods to manage DIDs.
-The ITN SDK has a DID Document Manager provide a set of functions to manage DID Documents.
+The ITN SDK provides methods to manage DIDs & DID Documents.
 
 ## Conformance
 
@@ -85,7 +84,7 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 1. Integrated Trust Network (ITN) is a block-chain based, protocol-agnostic, federated network delivering decentralized identity services for a new generation of secure digital commerce. ITN provides decentralized digital infrastructure as the required core trust services of governance, authority, identity, & assurance for multi-party business ecosystems.
 2. Encrypted Data Vault (EDV) for document storage.
-3. Content Addressable Storage (CAS) is an append-only implementation of a Postgres DB with content-addressable hashes and replication between ITN Nodes.
+3. Content Addressable Storage (CAS) is a database with content-addressable hashes and replication between ITN Nodes.
 4. Distributed Ledger Technology (DLT) (also called a distributed ledger or shared ledger) is the consensus of replicated, shared, and synchronized digital data that is geographically spread (distributed) across many sites, countries, or institutions. A distributed ledger requires peer-to-peer network and consensus algorithms to ensure the ledger is reliably replicated across nodes. Blockchains are the most well-known example.
 5. Decentralized Identifier (DID) is a globally unique identifier that can be resolved to a DID Document, or de-referenced on a specific distributed ledger network, much like a URL on the Internet.
 6. Verifiable Credential (VC) is a tamper-evident credential that has authorship that can be cryptographically verified. Verifiable credentials can be used to build verifiable presentations, which can also be cryptographically verified.
@@ -100,7 +99,7 @@ The ITN DID is derived as follow:
 - A random 32 byte string is generated
 - The seed is hashed using sha512
 - An Ed25519 key pair is generated from the hash. The key pair will be used as the recovery key pair
-- The identifier of the did:itn is the first 16 bytes of the public key encoded into Base58 format.
+- The identifier of the `did:itn` is the first 16 bytes of the public key encoded into Base58 format.
 
 The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
@@ -108,16 +107,13 @@ The format of ITN DID conform to the [W3C DID Core specification](https://www.w3
 
 ### Operations
 
-Identity Protocol provides methods to manage DIDs.
-
 #### Create
 
 Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
 
 Requirements:
 
-- `creator` input parameter can be a DID String or a DID document.
-- The provided DID MUST be compliant with the did:itn method.
+- The provided DID MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ---
@@ -128,8 +124,8 @@ Description: Based on the DID data schema context file and DID method an ITN pro
 
 Requirements:
 
-- A DID string MUST be provided as an input parameter.
-- The provided DID MUST be compliant with the did:itn method.
+- A DID string MUST be provided.
+- The provided DID MUST be compliant with the `did:itn` method.
 
 ---
 
@@ -139,8 +135,7 @@ Description: Based on the DID data schema context file and DID method an ITN pro
 
 Requirements:
 
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
+- The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ---
@@ -151,9 +146,8 @@ Description: Based on the DID data schema context file and DID method an ITN pro
 
 Requirements:
 
-- `did` input parameter MUST be a DID string that has to be revoked.
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
+- A DID string MUST be provided that has to be revoked.
+- The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ---
@@ -164,9 +158,8 @@ Description: Based on the DID data schema context file and DID method, an ITN pr
 
 Requirements:
 
-- `did` input parameter MUST be a DID string that has to be recovered.
-- `receiver` input parameter can be a DID string or a DID Document.
-- The provided DID string MUST be compliant with the did:itn method.
+- A DID string MUST be provided that has to be recovered.
+- The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
 ---
@@ -229,10 +222,6 @@ The `revoke` operation also deactivate the DID.
 
 ## Security Considerations
 
-For all `did:itn` DIDs, the initial asset creation, and subsequent updates are executed using `Ed25519` keys, which are widely recognized as a robust and secure cryptographic mechanism.
-
-@AlexMesser @pleerock can you - `Confirm - if the keys are different in the above line. DELETE THIS COMMENT LATER.`
-
 - ITN heavily relies on W3C DIDs (Decentralized Identifiers) and VCs (Verifiable Credentials) cryptographic mechanisms and decentralized trust models to mitigate the risks associated with various attacks.
 - Authentication service utilizing [OAuth2](https://oauth.net/2/) for REST APIs and [DIF DID AuthN](https://identity.foundation/working-groups/authentication.html) for DIF DIDcomm messaging.
 - Authentication is involved, particularly user-host authentication, the security characteristics are those of OAuth2 and DIDCom 2.0.
@@ -255,23 +244,23 @@ Digital signatures utilized between the ITN and a user utilize nonces and DLT tr
 
 Since ITN communication channels are using asymmetric encryption, the only way to insert a message would be to gain access to the private keys used for encryption, DID AuthN, and VC signatures.
 
-4. Deletion:
+4. Deletion
 
 The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical. 
 
-5. Modification:
+5. Modification
 
-Modifications of the DID anchoring transactions on the two DLTs cannot be modified. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless. 
+Modifications of the DID anchoring transactions on the two DLTs cannot be modified. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless.
 
-6. Denial of Service (DoS):
+6. Denial of Service (DoS)
 
 The ITN can operate as long as one honest node is operational. This means that besides typical (D)DoS protections enterprises utilize, the node redundancies in the network mitigate a DoS attack.
 
-7. Amplification:
+7. Amplification
 
-All DID operations apart from DID creation require DID AuthN. Therefore, each attack on a DID operation endpoint requires a DID and a secure communications channel. Hence, any attacks are limited to that established channel which can be disconnected at any time by an Operator. Lastly, the DID creation operation also requires establishing a secure communications channel which again restricts any attack to that channel, and, therefore, mitigation is as already mentioned. DOSing a channel would lead to a blacklisting of the malicious DID and a new DID would have to be created to perform an attack. Since the network only requires one honestly operating node, attacks by individual nodes would be recognized by other network nodes and access to that node can be easily removed by each node operator in their node, isolating the malicious node. And since network transactions have to be reimbursed to the ITN as an organization, spamming attacks of a compromised node lead to economic damage to the Operator operating the malicious node. This is an economic security guarantee since all Node Operators are known legal entities to which exists legal recourse. 
+All DID operations apart from DID creation require DID AuthN. Therefore, each attack on a DID operation endpoint requires a DID and a secure communications channel. Hence, any attacks are limited to that established channel which can be disconnected at any time by an Operator. Lastly, the DID creation operation also requires establishing a secure communications channel which again restricts any attack to that channel, and, therefore, mitigation is as already mentioned. DOSing a channel would lead to a blacklisting of the malicious DID and a new DID would have to be created to perform an attack. Since the network only requires one honestly operating node, attacks by individual nodes would be recognized by other network nodes and access to that node can be easily removed by each node operator in their node, isolating the malicious node. And since network transactions have to be reimbursed to the ITN as an organization, spamming attacks of a compromised node lead to economic damage to the Operator operating the malicious node. This is an economic security guarantee since all Node Operators are known legal entities to which exists legal recourse.
 
-8. Man-in-the-Middle (MitM):
+8. Man-in-the-Middle (MitM)
 
 Asymmetric encryption of all ITN communication channels ensures a high degree of safety against MitM attacks unless the relevant private keys are compromised.
 
