@@ -249,7 +249,7 @@ The DLT transactions on the two anchor DLTs cannot be deleted and DID document e
 
 5. Modification
 
-Modifications of the DID anchoring transactions on the two DLTs cannot be modified. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless.
+DID anchoring transactions on a DLT cannot be altered once the anchoring transaction is finalized on the respective DLT. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless.
 
 6. Denial of Service (DoS)
 
