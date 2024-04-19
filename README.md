@@ -109,7 +109,7 @@ The format of ITN DID conform to the [W3C DID Core specification](https://www.w3
 
 #### Create
 
-Description: Based on the DID data schema context file and DID method an ITN process anchors a DID and its DID document and delivers it to the requestor.
+Description: Based on the DID data schema context file and DID method, the network anchors a DID and its DID document and delivers it to the requestor.
 
 Requirements:
 
@@ -120,7 +120,7 @@ Requirements:
 
 #### Resolve
 
-Description: Based on the DID data schema context file and DID method an ITN process delivers a DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method, the network delivers a DID document in accordance with the W3C DID standard.
 
 Requirements:
 
@@ -131,7 +131,7 @@ Requirements:
 
 #### Update
 
-Description: Based on the DID data schema context file and DID method an ITN process creates an updated DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method, the network creates an updated DID document in accordance with the W3C DID standard.
 
 Requirements:
 
@@ -142,7 +142,7 @@ Requirements:
 
 #### Revoke
 
-Description: Based on the DID data schema context file and DID method an ITN process revokes an existing DID and its DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method, the network revokes an existing DID and its DID document in accordance with the W3C DID standard.
 
 Requirements:
 
@@ -154,7 +154,7 @@ Requirements:
 
 #### Recover
 
-Description: Based on the DID data schema context file and DID method, an ITN process recovers a DID and its DID document in accordance with the W3C DID standard.
+Description: Based on the DID data schema context file and DID method, the network recovers a DID and its DID document in accordance with the W3C DID standard.
 
 Requirements:
 
