@@ -311,22 +311,7 @@ Supported curves are:
     P-521
     Bls12381G1
     Bls12381G2
-    secp256k1
-
-## Message Encryptor
-
-Provides a set of functions to encrypt and decrypt DIDComm messages. Message Encryptor supports two forms of message
-encryption: Authenticated Sender Encryption (`authcrypt`) and Anonymous Sender Encryption (`anoncrypt`).
-Both forms are encrypted to the recipient DID. Only `authcrypt` provides direct assurances of who the sender is.
-
-#### Message Encryptor supports the following curves for the keys involved in key agreement
-
-| Curve  | Description                                                                                                                           |
-|--------|---------------------------------------------------------------------------------------------------------------------------------------|
-| X25519 | The underlying curve is actually Curve25519, however when used in the context of Diffie-Hellman<br/> the identifier of X25519 is used |
-| P-256  | NIST defined P-256 elliptic curve.                                                                                                    |
-| P-384  | NIST defined P-384 elliptic curve.                                                                                                    |
-| P-521  | NIST defined P-521 elliptic curve.                                                                                                    |
+    secp256k1                                                                                                   |
 
 #### The following `AEAD` algorithms are supported for content encryption of the message
 
