@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 18, 2024
+**Latest Update:** April 19, 2024
 
 **Contributors & Editors:**
 
@@ -52,11 +52,7 @@ The ITN Agent utilized in each ITN node is comprised of the following elements:
 - An implementation of ITN Core Services functionality via DIF DIDcomm
 - An implementation of the [W3C/DIF Encrypted Data Vault](https://identity.foundation/confidential-storage/) for document storage
 
-ITN Agent Integration can be achieved through an SDK, as utilized by the ITN.
-
-![ITN Agent](./docs/images/ITN%20Agent.jpg)
-
-ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
+ITN Agent Integration can be achieved through an SDK, as utilized by the ITN. ITN Agent is an implementation of the [Aries Agent RFC](https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0004-agents/README.md)
 with a flexible plugin architecture.
 
 Depending on which plugins and [DIDComm protocols](https://didcomm.org/search/?page=1) you use, your instance of ITN Agent can
@@ -246,7 +242,7 @@ Since ITN communication channels are using asymmetric encryption, the only way t
 
 4. Deletion
 
-The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical. 
+The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical.
 
 5. Modification
 
