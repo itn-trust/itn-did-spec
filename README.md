@@ -92,10 +92,13 @@ The keywords MAY, MUST, MUST NOT, RECOMMENDED, SHOULD, and SHOULD NOT in this do
 
 The ITN DID is derived as follow:
 
-- A random 32 byte string is generated
-- The seed is hashed using sha512
-- An Ed25519 key pair is generated from the hash. The key pair will be used as the recovery key pair
-- The identifier of the `did:itn` is the first 16 bytes of the public key encoded into Base58 format.
+1. A random 32 byte string is generated
+2. The seed is hashed using sha512
+3. An Ed25519 key pair is generated from the hash. The key pair will be used as the recovery key pair
+4. The identifier of the `did:itn` is the first 16 bytes of the recovery key pair's public key encoded into Base58 format.
+5. Prefix the generated identifier with `did:itn`
+
+All operations on the DID (update, revoke, recover) are signed by private recovery key and verified by public recovery key. Verification process also includes the DID identifier validation - having the public recovery key, the verifier repeats steps 4 and 5 on his side and makes sure the DID matches the recovery key.
 
 The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
