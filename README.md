@@ -118,7 +118,7 @@ Requirements:
 Here is how create operation works:
 
 - The create DID request is parsed by the ITN agent, which validates its syntax as well as the value of each field to follow specific rules.
-- The ITN agent generates the DID identifier based on the `did:itn` method specification, then the network stores the Hash(DID) and Hash(DID Document) in a smart contract on all the utilized ledger (one private and one public)
+- The sender (requestor) generates the DID identifier based on the `did:itn` method specification, then the network stores the Hash(DID) and Hash(DID Document) in a smart contract on all the utilized ledger (one private and one public)
 - The DID document is stored in a federated content-addressable storage solution.
 - The valid DID document is the JSON object returned as the reply of the request.
 
@@ -135,7 +135,7 @@ Requirements:
 
 Here is how resolve operation works:
 
-- The ITN Agent validates the provided DID, retrieves the DID Document from the federated content-addressable storage solution, retrieves the DID Document proof from one or more utilized ledger (either private or public) and returns the DID Document along with the DID Document proof to the requestor.
+- The ITN Agent is not involved in DID resolution process. The request goes directly to the DID Resolver.
 
 ---
 
@@ -150,7 +150,7 @@ Requirements:
 
 Here is how update operation works:
 
-- The ITN agent is responsible to verify that the initiator of the update request is the controller of the DID subject that will be updated. The authentication method defined in the DID Document will be used to authenticate the controller.
+- The ITN Agent is responsible to very sender’s update request, the update request sender must be specified as a DID Document Controller and is authenticated by verifying the update request signature. The update request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
 
 ---
 
@@ -166,7 +166,7 @@ Requirements:
 
 Here is how revoke operation works:
 
-- The ITN agent is responsible to verify that the initiator of the revoke request is the controller of the DID subject that will be revoked. The authentication method defined in the DID Document will be used to authenticate the controller. Then ITN agent perform the revoke DID operation.
+- The ITN Agent is responsible to very sender’s revoke request, the revoke request sender must be specified as a DID Document Controller and is authenticated by verifying the revoke request signature. The revoke request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
 
 ---
 
@@ -182,7 +182,7 @@ Requirements:
 
 Here is how recover operation works:
 
-- The ITN agent is responsible to verify that the initiator of the recover request is the controller of the DID subject that will be recovered. The authentication method defined in the DID Document will be used to authenticate the controller. Then ITN agent perform the recover DID operation.
+- The ITN Agent is responsible to very sender’s recover request, the recover request sender must be specified as a DID Document Controller and is authenticated by verifying the recover request signature. The recover request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
 
 ---
 
