@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 19, 2024
+**Latest Update:** April 29, 2024
 
 **Contributors & Editors:**
 
@@ -115,6 +115,13 @@ Requirements:
 - The provided DID MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
+Here is how create operation works:
+
+- The create DID request is parsed by the ITN agent, which validates its syntax as well as the value of each field to follow specific rules.
+- The sender (requestor) generates the DID identifier based on the `did:itn` method specification, then the network stores the Hash(DID) and Hash(DID Document) in a smart contract on all the utilized ledger (one private and one public)
+- The DID document is stored in a federated content-addressable storage solution.
+- The valid DID document is the JSON object returned as the reply of the request.
+
 ---
 
 #### Resolve
@@ -126,6 +133,10 @@ Requirements:
 - A DID string MUST be provided.
 - The provided DID MUST be compliant with the `did:itn` method.
 
+Here is how resolve operation works:
+
+- The ITN Agent is not involved in DID resolution process. The request goes directly to the DID Resolver.
+
 ---
 
 #### Update
@@ -136,6 +147,10 @@ Requirements:
 
 - The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+Here is how update operation works:
+
+- The ITN Agent is responsible to very sender’s update request, the update request sender must be specified as a DID Document Controller and is authenticated by verifying the update request signature. The update request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
 
 ---
 
@@ -149,6 +164,10 @@ Requirements:
 - The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
 
+Here is how revoke operation works:
+
+- The ITN Agent is responsible to very sender’s revoke request, the revoke request sender must be specified as a DID Document Controller and is authenticated by verifying the revoke request signature. The revoke request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
+
 ---
 
 #### Recover
@@ -160,6 +179,10 @@ Requirements:
 - A DID string MUST be provided that has to be recovered.
 - The provided DID string MUST be compliant with the `did:itn` method.
 - The provided DID document MUST be compliant with the DID V1.0 DID document specification.
+
+Here is how recover operation works:
+
+- The ITN Agent is responsible to very sender’s recover request, the recover request sender must be specified as a DID Document Controller and is authenticated by verifying the recover request signature. The recover request must be signed by the recovery key which is used before to generate the DID identifier. Note: DID Document is updated in the CAS and ledgers.
 
 ---
 
