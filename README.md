@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** April 29, 2024
+**Latest Update:** May 08, 2024
 
 **Contributors & Editors:**
 
