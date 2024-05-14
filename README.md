@@ -7,7 +7,7 @@ The DID ITN Method Specification 1.0
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** May 08, 2024
+**Latest Update:** May 13, 2024
 
 **Contributors & Editors:**
 
@@ -101,6 +101,18 @@ The ITN DID is derived as follow:
 All operations on the DID (update, revoke, recover) are signed by private recovery key and verified by public recovery key. Verification process also includes the DID identifier validation - having the public recovery key, the verifier repeats steps 4 and 5 on his side and makes sure the DID matches the recovery key.
 
 The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
+
+**Backus–Naur Form of ITN DID**
+
+- ITN-DID ::= “did:itn:” itn-specific-id
+- itn-specific-id ::= base58-encoded-key
+- base58-encoded-key ::= base58-char
+- base58-char ::= [1-9] | [A-H] | [J-N] | [P-Z] | [a-k] | [m-z]
+
+Explanation:
+- An ITN DID consists of the prefix “did:itn:” followed by the ITN-specific identifier.
+- The ITN-specific identifier is the base58 encoding of the first 16 bytes of the recovery key pair’s public key.
+- The “base58-encoded-key” represents the encoded key in base58 format, which is a special encoding scheme that excludes easily confused characters such as 0 (zero), O (capital letter O), I (capital letter i), and l (lowercase letter L).
 
 **Note:** Format section ensures the ITN DID Format complies with [W3C DID Method Syntax](https://w3c.github.io/did-core/#method-syntax)
 
