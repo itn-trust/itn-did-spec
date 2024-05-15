@@ -1,5 +1,4 @@
-The DID ITN Method Specification 1.0
-==================
+# The DID ITN Method Specification 1.0
 
 **Specification Status**: Working Draft
 
@@ -66,7 +65,7 @@ perform a variety of roles:
 Agent provides a common interface for plugins to expand its functionality. It is designed to be modular and extensible,
 so you can add new protocols, transports, and managers to fit your needs.
 
-## ITN SDK
+### ITN SDK
 
 ![ITN_SDK](https://github.com/itn-trust/itn-did-spec/assets/18353464/6135b073-c085-41fd-8ea4-f80e64e0485d)
 
@@ -102,7 +101,7 @@ All operations on the DID (update, revoke, recover) are signed by private recove
 
 The format of ITN DID conform to the [W3C DID Core specification](https://www.w3.org/TR/did-core/). The W3C DID Core specification does not specify how a DID is generated, and leaves it up to the implementation provided it ensures uniqueness to a high degree of confidence.
 
-**Backus–Naur Form of ITN DID**
+#### **Backus–Naur Form of ITN DID**
 
 - ITN-DID ::= “did:itn:” itn-specific-id
 - itn-specific-id ::= base58-encoded-key
@@ -110,6 +109,7 @@ The format of ITN DID conform to the [W3C DID Core specification](https://www.w3
 - base58-char ::= [1-9] | [A-H] | [J-N] | [P-Z] | [a-k] | [m-z]
 
 Explanation:
+
 - An ITN DID consists of the prefix “did:itn:” followed by the ITN-specific identifier.
 - The ITN-specific identifier is the base58 encoding of the first 16 bytes of the recovery key pair’s public key.
 - The “base58-encoded-key” represents the encoded key in base58 format, which is a special encoding scheme that excludes easily confused characters such as 0 (zero), O (capital letter O), I (capital letter i), and l (lowercase letter L).
@@ -266,37 +266,21 @@ The `revoke` operation also deactivate the DID.
 
 Here's how ITN can prevent the specific attacks outlined:
 
-1. Eavesdropping
+1. **Eavesdropping:** ITN DID can facilitate the establishment of secure communication channels between parties by encrypting messages exchanged between DIDs using cryptographic keys defined in the corresponding DID Documents. DIDs and VCs use cryptographic signatures to ensure that communication between parties is encrypted and authenticated. This prevents unauthorized interception and eavesdropping of sensitive information.
 
-ITN DID can facilitate the establishment of secure communication channels between parties by encrypting messages exchanged between DIDs using cryptographic keys defined in the corresponding DID Documents. DIDs and VCs use cryptographic signatures to ensure that communication between parties is encrypted and authenticated. This prevents unauthorized interception and eavesdropping of sensitive information.
+2. **Replay:** Digital signatures utilized between the ITN and a user utilize nonces and DLT transactions on either of the utilized networks utilize both chainIds and account nonces to prevent DLT transaction replays.
 
-2. Replay
+3. **Message Insertion:** Since ITN communication channels are using asymmetric encryption, the only way to insert a message would be to gain access to the private keys used for encryption, DID AuthN, and VC signatures.
 
-Digital signatures utilized between the ITN and a user utilize nonces and DLT transactions on either of the utilized networks utilize both chainIds and account nonces to prevent DLT transaction replays.
+4. **Deletion:** The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical.
 
-3. Message Insertion
+5. **Modification:** DID anchoring transactions on a DLT cannot be altered once the anchoring transaction is finalized on the respective DLT. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless.
 
-Since ITN communication channels are using asymmetric encryption, the only way to insert a message would be to gain access to the private keys used for encryption, DID AuthN, and VC signatures.
+6. **Denial of Service (DoS):** The ITN can operate as long as one honest node is operational. This means that besides typical (D)DoS protections enterprises utilize, the node redundancies in the network mitigate a DoS attack.
 
-4. Deletion
+7. **Amplification:** All DID operations apart from DID creation require DID AuthN. Therefore, each attack on a DID operation endpoint requires a DID and a secure communications channel. Hence, any attacks are limited to that established channel which can be disconnected at any time by an Operator. Lastly, the DID creation operation also requires establishing a secure communications channel which again restricts any attack to that channel, and, therefore, mitigation is as already mentioned. DOSing a channel would lead to a blacklisting of the malicious DID and a new DID would have to be created to perform an attack. Since the network only requires one honestly operating node, attacks by individual nodes would be recognized by other network nodes and access to that node can be easily removed by each node operator in their node, isolating the malicious node. And since network transactions have to be reimbursed to the ITN as an organization, spamming attacks of a compromised node lead to economic damage to the Operator operating the malicious node. This is an economic security guarantee since all Node Operators are known legal entities to which exists legal recourse.```
 
-The DLT transactions on the two anchor DLTs cannot be deleted and DID document entries in the CAS can only be deleted by ITN Node Operators. ITN Node Operators are permissioned, and known legal entities. In addition, currently, only three ITN nodes have write permissions into the CAS. Lastly, existing CAS data redundancies make a CAS deletion not practical.
-
-5. Modification
-
-DID anchoring transactions on a DLT cannot be altered once the anchoring transaction is finalized on the respective DLT. CAS DID doc entries could only be maliciously modified by three specific ITN Nodes. Furthermore, data redundancies with rollbacks make modification attacks useless.
-
-6. Denial of Service (DoS)
-
-The ITN can operate as long as one honest node is operational. This means that besides typical (D)DoS protections enterprises utilize, the node redundancies in the network mitigate a DoS attack.
-
-7. Amplification
-
-All DID operations apart from DID creation require DID AuthN. Therefore, each attack on a DID operation endpoint requires a DID and a secure communications channel. Hence, any attacks are limited to that established channel which can be disconnected at any time by an Operator. Lastly, the DID creation operation also requires establishing a secure communications channel which again restricts any attack to that channel, and, therefore, mitigation is as already mentioned. DOSing a channel would lead to a blacklisting of the malicious DID and a new DID would have to be created to perform an attack. Since the network only requires one honestly operating node, attacks by individual nodes would be recognized by other network nodes and access to that node can be easily removed by each node operator in their node, isolating the malicious node. And since network transactions have to be reimbursed to the ITN as an organization, spamming attacks of a compromised node lead to economic damage to the Operator operating the malicious node. This is an economic security guarantee since all Node Operators are known legal entities to which exists legal recourse.
-
-8. Man-in-the-Middle (MitM)
-
-Asymmetric encryption of all ITN communication channels ensures a high degree of safety against MitM attacks unless the relevant private keys are compromised.
+8. **Man-in-the-Middle (MitM):** Asymmetric encryption of all ITN communication channels ensures a high degree of safety against MitM attacks unless the relevant private keys are compromised.
 
 **Note:** Security Considerations section ensures the ITN DID Method Security considerations comply with [W3C DID Method Security Requirements](https://w3c.github.io/did-core/#security-requirements)
 
@@ -323,31 +307,31 @@ ITN SDK has crypto-ld-suite package that provides a set of functions to generate
 
 Cryptographic Key Types supported
 
-    Ed25519VerificationKey2018
-    Ed25519VerificationKey2020
-    X25519KeyAgreementKey2019
-    X25519KeyAgreementKey2020
-    EcdsaSecp256k1VerificationKey2019
-    EcdsaSecp256r1VerificationKey2020
-    EcdsaSecp384r1VerificationKey2020
-    EcdsaSecp521r1VerificationKey2020
-    RsaVerificationKey2018
-    Bls12381G1Key2020
-    Bls12381G2Key2020
+  Ed25519VerificationKey2018
+  Ed25519VerificationKey2020
+  X25519KeyAgreementKey2019
+  X25519KeyAgreementKey2020
+  EcdsaSecp256k1VerificationKey2019
+  EcdsaSecp256r1VerificationKey2020
+  EcdsaSecp384r1VerificationKey2020
+  EcdsaSecp521r1VerificationKey2020
+  RsaVerificationKey2018
+  Bls12381G1Key2020
+  Bls12381G2Key2020
 
 Supported curves are:
 
-    Ed25519
-    X25519
-    RSA
-    P-256
-    P-384
-    P-521
-    Bls12381G1
-    Bls12381G2
-    secp256k1                                                                                                   |
+  Ed25519
+  X25519
+  RSA
+  P-256
+  P-384
+  P-521
+  Bls12381G1
+  Bls12381G2
+  secp256k1                                                                                                   |
 
-#### The following `AEAD` algorithms are supported for content encryption of the message
+### The following `AEAD` algorithms are supported for content encryption of the message
 
 | Algorithm     | Description                                 |
 |---------------|---------------------------------------------|
