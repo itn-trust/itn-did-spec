@@ -6,7 +6,7 @@
 
 **Draft Created:** April 10, 2024
 
-**Latest Update:** May 15, 2024
+**Latest Update:** June 24, 2024
 
 **Contributors & Editors:**
 
@@ -307,29 +307,29 @@ ITN SDK has crypto-ld-suite package that provides a set of functions to generate
 
 Cryptographic Key Types supported
 
-  Ed25519VerificationKey2018
-  Ed25519VerificationKey2020
-  X25519KeyAgreementKey2019
-  X25519KeyAgreementKey2020
-  EcdsaSecp256k1VerificationKey2019
-  EcdsaSecp256r1VerificationKey2020
-  EcdsaSecp384r1VerificationKey2020
-  EcdsaSecp521r1VerificationKey2020
-  RsaVerificationKey2018
-  Bls12381G1Key2020
-  Bls12381G2Key2020
+  - Ed25519VerificationKey2018
+  - Ed25519VerificationKey2020
+  - X25519KeyAgreementKey2019
+  - X25519KeyAgreementKey2020
+  - EcdsaSecp256k1VerificationKey2019
+  - EcdsaSecp256r1VerificationKey2020
+  - EcdsaSecp384r1VerificationKey2020
+  - EcdsaSecp521r1VerificationKey2020
+  - RsaVerificationKey2018
+  - Bls12381G1Key2020
+  - Bls12381G2Key2020
 
 Supported curves are:
 
-  Ed25519
-  X25519
-  RSA
-  P-256
-  P-384
-  P-521
-  Bls12381G1
-  Bls12381G2
-  secp256k1                                                                                                   |
+  - Ed25519
+  - X25519
+  - RSA
+  - P-256
+  - P-384
+  - P-521
+  - Bls12381G1
+  - Bls12381G2
+  - secp256k1                                                                                                   |
 
 ### The following `AEAD` algorithms are supported for content encryption of the message
 
